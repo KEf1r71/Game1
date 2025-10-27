@@ -45,7 +45,7 @@ class Enemy:
         print("Имя противника:",B.name,"Хп противника:",B.hp,"Оружие противника:",B.gun,"Скорость противника:",B.speed,"Урон противника:",B.damage)
 Enemy.CreateEnemy()
 def LutiyFight(A,B):
-    input("")
+    input("Нажмите Enter ")
     if B.speed<=A.speed:
         B.hp-=A.damage
         if B.hp<=0:
