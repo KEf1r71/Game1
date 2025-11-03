@@ -1,11 +1,12 @@
 import random
 class Character:
-    def __init__(self,name,hp,gun,speed,damage):
+    def __init__(self,name,hp,gun,speed,damage,):
         self.name=name
         self.hp=hp
         self.gun=gun
         self.speed=speed
         self.damage=damage
+        self.slot=False
 name,hp,gun,speed,damage=None,None,None,None,None
 def Function():
     global name,hp,gun,speed,damage,A
@@ -26,6 +27,21 @@ def Function():
         print("это должно быть написано цифрами, переделывай ")
         Function()
 Function()
+class Weapon:
+    #добавить дальность
+    def __init__(self,name,fireRate, physDmg, magicDmg):
+        self.name=name
+        self.fireRate=fireRate
+        self.physDmg=physDmg
+        self.magicDmg=magicDmg
+    def take(self,character):
+        character.slot=True
+        character.damage+=self.physDmg+self.magicDmg
+        character.speed+=self.fireRate
+    def drop(self,character):
+        character.slot=False
+        character.damage-=
+
 class Enemy:
     def __init__(self,name,hp,gun,speed,damage):
         self.name=name
@@ -75,3 +91,6 @@ def LutiyFight(A,B):
             print(B.hp,"Хп осталось у противника, НО! ЕСЛИ ВЫ КУПИТЕ DLC ПРЕВОСХОДСВО ЗА 69.99 ДО ПРОТИВНИК ПУДЕТ УМИРАТЬ ЗА ПЕРВЫЙ УДАР ОТ ДИЗМОРАЛИ.")
             LutiyFight(A,B)
 LutiyFight(A,B)
+armory=[Weapon("Lock18",7,20,0),
+        Weapon("MagickStick3000",3,0,27),
+        Weapon("Bayonet",10,30,0)]
