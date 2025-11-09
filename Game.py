@@ -1,11 +1,13 @@
 import random
 class Character:
-    def __init__(self,name,hp,gun,speed,damage,):
+    def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy):
         self.name=name
         self.hp=hp
         self.gun=gun
         self.speed=speed
         self.damage=damage
+        self.fRange=fRange
+        self.gAccuracy=gAccuracy
         self.slot=False
 name,hp,gun,speed,damage=None,None,None,None,None
 def Function():
@@ -28,20 +30,25 @@ def Function():
         Function()
 Function()
 class Weapon:
-    #добавить дальность
-    def __init__(self,name,fireRate, physDmg, magicDmg):
+    def __init__(self,name,fireRate, physDmg, magicDmg,range,accuracy):
         self.name=name
         self.fireRate=fireRate
         self.physDmg=physDmg
         self.magicDmg=magicDmg
+        self.range=range
+        self.accuracy=accuracy
     def take(self,character):
         character.slot=True
         character.damage+=self.physDmg+self.magicDmg
         character.speed+=self.fireRate
+        character.fRange+=self.range
+        character.gAccuracy+=self.accuracy
     def drop(self,character):
         character.slot=False
-        character.damage-=
-
+        character.damage-=self.physDmg+self.magicDmg
+        character.speed-=self.fireRate
+        character.fRange-=self.range
+        character.gAccuracy-=self.accuracy
 class Enemy:
     def __init__(self,name,hp,gun,speed,damage):
         self.name=name
@@ -91,6 +98,13 @@ def LutiyFight(A,B):
             print(B.hp,"Хп осталось у противника, НО! ЕСЛИ ВЫ КУПИТЕ DLC ПРЕВОСХОДСВО ЗА 69.99 ДО ПРОТИВНИК ПУДЕТ УМИРАТЬ ЗА ПЕРВЫЙ УДАР ОТ ДИЗМОРАЛИ.")
             LutiyFight(A,B)
 LutiyFight(A,B)
-armory=[Weapon("Lock18",7,20,0),
-        Weapon("MagickStick3000",3,0,27),
-        Weapon("Bayonet",10,30,0)]
+armory=[Weapon("Lock18",15,20,0,40,50),
+        Weapon("MagickStick3000",5,0,27,25,40),
+        Weapon("Bayonet",10,40,0,5,90)
+        Weapon("Handmade Assault Rifle",20,50,0,80,60)
+        Weapon("Military Grade Assault Rifle",35,40,0,90,65)
+        Weapon("Enchanted Magic Stick",10,0,40,40,50)
+        Weapon("Old Magic Book",15,5,35,30,70)
+        Weapon("M259 LMG",50,40,0,70,70)
+        Weapon("Bolt Action Rifle",7,80,0,100,95)
+        Weapon("L3 Sniper Rifle",5,95,0,120,100)]
