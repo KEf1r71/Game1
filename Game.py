@@ -56,7 +56,7 @@ class Enemy:
         self.gun=gun
         self.speed=speed
         self.damage=damage
-    def CreateEnemy():
+    def CreateEnemy(self):
         global B
         EnemyName=random.choice(["БОТ Боб","Афанасий","Нагибатор2004","deepNagibator200"])
         EnemyFullName=("ТОЧНО РЕАЛЬНЫЙ ИГРОК "+EnemyName)
@@ -67,6 +67,18 @@ class Enemy:
         B=Enemy(EnemyFullName,EnemyHp,EnemyGun,EnemySpeed,EnemyDamage)
         print("Имя противника:",B.name,"Хп противника:",B.hp,"Оружие противника:",B.gun,"Скорость противника:",B.speed,"Урон противника:",B.damage)
 Enemy.CreateEnemy()
+
+#добавить возможность подбежать к врагу
+def HitChance(character,enemy,distance):
+    BaseAccuracy=character.gAccuracy
+    dRange=character.fRange-distance
+    if dRange>=0:
+#порезка урона
+        damageP=0
+    else:
+        damageP=abs(dRange)
+    finalHitChance=BaseAccuracy-damageP+character.speed
+    return max(15,min(100,finalHitChance))
 def LutiyFight(A,B):
     input("Нажмите Enter ")
     if B.speed<=A.speed:
