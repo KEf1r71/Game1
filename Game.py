@@ -1,4 +1,5 @@
 import random
+#добавить игроку и врагу броню
 class Character:
     def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy):
         self.name=name
@@ -112,11 +113,11 @@ def LutiyFight(A,B):
 LutiyFight(A,B)
 armory=[Weapon("Lock18",15,20,0,40,50),
         Weapon("MagickStick3000",5,0,27,25,40),
-        Weapon("Bayonet",10,40,0,5,90)
-        Weapon("Handmade Assault Rifle",20,50,0,80,60)
-        Weapon("Military Grade Assault Rifle",35,40,0,90,65)
-        Weapon("Enchanted Magic Stick",10,0,40,40,50)
-        Weapon("Old Magic Book",15,5,35,30,70)
-        Weapon("M259 LMG",50,40,0,70,70)
-        Weapon("Bolt Action Rifle",7,80,0,100,95)
+        Weapon("Bayonet",10,40,0,5,90),
+        Weapon("Handmade Assault Rifle",20,50,0,80,60),
+        Weapon("Military Grade Assault Rifle",35,40,0,90,65),
+        Weapon("Enchanted Magic Stick",10,0,40,40,50),
+        Weapon("Old Magic Book",15,5,35,30,70),
+        Weapon("M259 LMG",50,40,0,70,70),
+        Weapon("Bolt Action Rifle",7,80,0,100,95),
         Weapon("L3 Sniper Rifle",5,95,0,120,100)]
