@@ -1,7 +1,7 @@
 import random
 #добавить игроку и врагу броню
 class Character:
-    def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy):
+    def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef):
         self.name=name
         self.hp=hp
         self.gun=gun
@@ -10,6 +10,7 @@ class Character:
         self.fRange=fRange
         self.gAccuracy=gAccuracy
         self.slot=False
+        self.armorSlot=False
 name,hp,gun,speed,damage=None,None,None,None,None
 def Function():
     global name,hp,gun,speed,damage,A
@@ -30,6 +31,19 @@ def Function():
         print("это должно быть написано цифрами, переделывай ")
         Function()
 Function()
+class Armor:
+    def __init__(self,name,pDefence,mDefence,character):
+        self.name=name
+        self.pDefence=pDefence
+        self.mDefence=mDefence
+    def take(self, character):
+        character.armorSlot=True
+        character.PhysDefence+=self.pDefence
+        character.cMgcDefence-=self.mDefence
+    def drop(self, character):
+        character.armorSlot=False
+        character.PhysDefence-=self.pDefence
+        character.cMgcDefence-=self.mDefence
 class Weapon:
     def __init__(self,name,fireRate, physDmg, magicDmg,range,accuracy):
         self.name=name
@@ -62,7 +76,7 @@ class Enemy:
         EnemyName=random.choice(["БОТ Боб","Афанасий","Нагибатор2004","deepNagibator200"])
         EnemyFullName=("ТОЧНО РЕАЛЬНЫЙ ИГРОК "+EnemyName)
         EnemyHp=random.randint(75,500)
-        EnemyGun=random.choice(["Лещ","Бутерброд","Флогистонатор","Дисциплинированное Взыскание"])
+        EnemyGun=random.choice([])
         EnemySpeed=random.randint(50,200)
         EnemyDamage=random.randint(40,100)
         B=Enemy(EnemyFullName,EnemyHp,EnemyGun,EnemySpeed,EnemyDamage)
@@ -111,6 +125,16 @@ def LutiyFight(A,B):
             print(B.hp,"Хп осталось у противника, НО! ЕСЛИ ВЫ КУПИТЕ DLC ПРЕВОСХОДСВО ЗА 69.99 ДО ПРОТИВНИК ПУДЕТ УМИРАТЬ ЗА ПЕРВЫЙ УДАР ОТ ДИЗМОРАЛИ.")
             LutiyFight(A,B)
 LutiyFight(A,B)
+armor=[Armor("Burlap Clothes",10,5),
+       Armor("Old Cape",5,15),
+       Armor("Nice Set Of Clothes",20,10),
+       Armor("Enchanted Magic Clothes",7,20),
+       Armor("Roadsign Armor Set",35,10),
+       Armor("Wizard Clothes",15,35),
+       Armor("High Quality Metal Gear",50,15),
+       Armor("Military Grade Armor",60,15),
+       Armor("Anti-Radiation Suit",30,30),
+       Armor("Enchanted Old Wizard's Set",20,50),]
 armory=[Weapon("Lock18",15,20,0,40,50),
         Weapon("MagickStick3000",5,0,27,25,40),
         Weapon("Bayonet",10,40,0,5,90),
@@ -118,6 +142,6 @@ armory=[Weapon("Lock18",15,20,0,40,50),
         Weapon("Military Grade Assault Rifle",35,40,0,90,65),
         Weapon("Enchanted Magic Stick",10,0,40,40,50),
         Weapon("Old Magic Book",15,5,35,30,70),
-        Weapon("M259 LMG",50,40,0,70,70),
+        Weapon("M249 LMG",50,40,0,70,70),
         Weapon("Bolt Action Rifle",7,80,0,100,95),
         Weapon("L3 Sniper Rifle",5,95,0,120,100)]
