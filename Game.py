@@ -1,7 +1,7 @@
 import random
 #добавить игроку и врагу броню
 class Character:
-    def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef):
+    def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,cLvl):
         self.name=name
         self.hp=hp
         self.gun=gun
@@ -9,6 +9,10 @@ class Character:
         self.damage=damage
         self.fRange=fRange
         self.gAccuracy=gAccuracy
+        self.cArmor=cArmor
+        self.cPhysDef=cPhysDef
+        self.cMgcDef=cMgcDef
+        self.cLvl=cLvl
         self.slot=False
         self.armorSlot=False
 name,hp,gun,speed,damage=None,None,None,None,None
@@ -39,7 +43,7 @@ class Armor:
     def take(self, character):
         character.armorSlot=True
         character.PhysDefence+=self.pDefence
-        character.cMgcDefence-=self.mDefence
+        character.cMgcDefence+=self.mDefence
     def drop(self, character):
         character.armorSlot=False
         character.PhysDefence-=self.pDefence
@@ -65,22 +69,32 @@ class Weapon:
         character.fRange-=self.range
         character.gAccuracy-=self.accuracy
 class Enemy:
-    def __init__(self,name,hp,gun,speed,damage):
+    def __init__(self,name,hp,gun,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,giveXp,lvl):
         self.name=name
         self.hp=hp
         self.gun=gun
-        self.speed=speed
         self.damage=damage
-    def CreateEnemy(self):
-        global B
-        EnemyName=random.choice(["БОТ Боб","Афанасий","Нагибатор2004","deepNagibator200"])
-        EnemyFullName=("ТОЧНО РЕАЛЬНЫЙ ИГРОК "+EnemyName)
-        EnemyHp=random.randint(75,500)
-        EnemyGun=random.choice([])
-        EnemySpeed=random.randint(50,200)
-        EnemyDamage=random.randint(40,100)
-        B=Enemy(EnemyFullName,EnemyHp,EnemyGun,EnemySpeed,EnemyDamage)
-        print("Имя противника:",B.name,"Хп противника:",B.hp,"Оружие противника:",B.gun,"Скорость противника:",B.speed,"Урон противника:",B.damage)
+        self.fRange=fRange
+        self.gAccuracy=gAccuracy
+        self.cArmor=cArmor
+        self.cPhysDef=cPhysDef
+        self.cMgcDef=cMgcDef
+        self.giveXp=giveXp
+        self.lvl=lvl
+    def ChoiceEnemy(self,cLvl):
+        if cLvl<=50:
+            eLvl=max(1,cLvl+random.choice(-5,5))
+        elif 50<cLvl<=100:
+            eLvl = max(1, cLvl + random.choice(-5, 10))
+        elif 100<cLvl<=200:
+            eLvl = max(1, cLvl + random.choice(-10, 20))
+        else:
+            eLvl = max(1, cLvl + random.choice(-20, 40))
+        avaliableEnemy=[]
+        for i in enemy:
+            if abs(i.lvl-eLvl)<=5:
+                avaliableEnemy.append(i)
+#добавить список врагов, дописать учет разброса в подборе
 Enemy.CreateEnemy()
 
 #добавить возможность подбежать к врагу
@@ -125,6 +139,7 @@ def LutiyFight(A,B):
             print(B.hp,"Хп осталось у противника, НО! ЕСЛИ ВЫ КУПИТЕ DLC ПРЕВОСХОДСВО ЗА 69.99 ДО ПРОТИВНИК ПУДЕТ УМИРАТЬ ЗА ПЕРВЫЙ УДАР ОТ ДИЗМОРАЛИ.")
             LutiyFight(A,B)
 LutiyFight(A,B)
+enemy=[Enemy("БОТ Боб", 80, "Деревянная палка", 10, 25, 30, 5, "Тряпки", 5, 2, 1)]
 armor=[Armor("Burlap Clothes",10,5),
        Armor("Old Cape",5,15),
        Armor("Nice Set Of Clothes",20,10),
