@@ -1,7 +1,6 @@
 import random
-#добавить игроку и врагу броню
 class Character:
-    def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,cLvl):
+    def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,cLvl,currentXp,remainingXp,talent):
         self.name=name
         self.hp=hp
         self.gun=gun
@@ -13,8 +12,32 @@ class Character:
         self.cPhysDef=cPhysDef
         self.cMgcDef=cMgcDef
         self.cLvl=cLvl
+        self.currentXp=currentXp
+        self.remainingXp=100
+        self.talent=0
         self.slot=False
         self.armorSlot=False
+    def talentUse(self):
+        if self.talent<=0:
+            print("У вас нет очков таланта")
+            return False
+#Дописать функцию распределения очков таланта.
+        print(f"У вас осталось {self.talent} очков таланта")
+    def lvlGet(self,xpGave):
+        self.currentXp+=xpGave
+        print(f"Вы получили {xpGave} опыта ")
+        lvlGive=0
+        while self.currentXp>self.remainingXp:
+            self.talent+=1
+            self.lvlUp()
+            lvlGive+=1
+            self.currentXp-=100
+        print(f"Получено {lvlGive} уровней, у вас остались нераспределенные очки талантов: {self.talent} ")
+    def lvlUp(self):
+        self.cLvl+=1
+        print(f"У тебя теперь {self.cLvl} уровень. ")
+        print(f"У тебя осталось {self.talent} очков талантов, готовых к распределению. ")
+        print(f"До следующего уровня осталось {}")
 name,hp,gun,speed,damage=None,None,None,None,None
 def Function():
     global name,hp,gun,speed,damage,A
@@ -69,11 +92,12 @@ class Weapon:
         character.fRange-=self.range
         character.gAccuracy-=self.accuracy
 class Enemy:
-    def __init__(self,name,hp,gun,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,giveXp,lvl):
+    def __init__(self,name,hp,gun,physDmg,mgcDmg,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,giveXp,lvl):
         self.name=name
         self.hp=hp
         self.gun=gun
-        self.damage=damage
+        self.physDmg=physDmg
+        self.mgcDmg=mgcDmg
         self.fRange=fRange
         self.gAccuracy=gAccuracy
         self.cArmor=cArmor
@@ -94,7 +118,6 @@ class Enemy:
         for i in enemy:
             if abs(i.lvl-eLvl)<=5:
                 avaliableEnemy.append(i)
-#добавить список врагов, дописать учет разброса в подборе
 Enemy.CreateEnemy()
 
 #добавить возможность подбежать к врагу
