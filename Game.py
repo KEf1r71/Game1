@@ -2,9 +2,9 @@ import random
 class Character:
     def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,cLvl,currentXp,remainingXp,talent):
         self.name=name
-        self.hp=hp
+        self.hp=100
         self.gun=gun
-        self.speed=speed
+        self.speed=30
         self.damage=damage
         self.fRange=fRange
         self.gAccuracy=gAccuracy
@@ -21,6 +21,8 @@ class Character:
         if self.talent<=0:
             print("У вас нет очков таланта")
             return False
+        else:
+            print(f"У вас есть {self.talent} очков таланта")
 #Дописать функцию распределения очков таланта.
         print(f"У вас осталось {self.talent} очков таланта")
     def lvlGet(self,xpGave):
