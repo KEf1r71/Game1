@@ -6,7 +6,7 @@ class Character:
         self.gun=gun
         self.speed=30
         self.damage=10
-        self.fRange=fRange
+        self.fRange=5
         self.gAccuracy=10
         self.cArmor=cArmor
         self.cPhysDef=cPhysDef
@@ -14,37 +14,64 @@ class Character:
         self.cLvl=cLvl
         self.currentXp=currentXp
         self.remainingXp=100
-        self.talent=0
+        self.talent=5
         self.slot=False
         self.armorSlot=False
+    #создать дефолтного дебильчика с базовыми статами и выдать ему какое нибудь изначальное оружие
     def talentUse(self):
         if self.talent<=0:
             print("У вас нет очков таланта")
             return False
         else:
-            print(f"У вас есть {self.talent} очков таланта")
-            tUp=int(input(print("Нажмите 1 чтобы прокачать здоровье"
-                  "Нажмите 2 чтобы прокачать скорость"
-                  "Нажмите 3 чтобы прокачать урон"
-                  "Нажмите 4 чтобы прокачать точность")))
-            if tUp==1:
-                self.hp+=10
-                self.talent-=1
-                return False
-            if tUp==2:
-                self.speed+=10
-                self.talent-=1
-                return False
-            if tUp==3:
-                self.damage+=5
-                self.talent-=1
-                return False
-            if tUp==4:
-                self.gAccuracy+=10
-                self.talent-=1
-                return False
-#Дописать функцию распределения очков таланта.
-        print(f"У вас осталось {self.talent} очков таланта")
+            while self.talent>0:
+                print(f"У вас есть {self.talent} очков таланта")
+                print("Нажмите 1 чтобы прокачать здоровье")
+                print("Нажмите 2 чтобы прокачать скорость")
+                print("Нажмите 3 чтобы прокачать урон")
+                print("Нажмите 4 чтобы прокачать точность")
+                print("Нажмите 5 чтобы посмотреть свою статистику. ")
+                print("Нажмите 6 чтобы выйти из меню прокачки. ")
+                tUp=int(input("выберите навык для прокачки "))
+                if tUp == 1:
+                    self.hp += 10
+                    self.talent -= 1
+                    print("Вы вложили 1 очко таланта в здоровье. ")
+                elif tUp == 2:
+                    self.speed += 10
+                    self.talent -= 1
+                    print("Вы вложили 1 очко таланта в скорость. ")
+                elif tUp == 3:
+                    self.damage += 5
+                    self.talent -= 1
+                    print("Вы вложили 1 очко таланта в урон. ")
+                elif tUp == 4:
+                    self.gAccuracy += 10
+                    self.talent -= 1
+                    print("Вы вложили 1 очко таланта в точность. ")
+                elif tUp == 5:
+                    self.stats()
+                    continue
+                elif tUp == 6:
+                    print("Выход из прокачки...")
+                    break
+                else:
+                    print("Не, не хочу.")
+                    continue
+        return True
+    def stats(self):
+        print(f"Имя персонажа: {self.name} ")
+        print(f"Здоровье персонажа: {self.hp} ")
+        print(f"Используемое оружие: {self.gun} ")
+        print(f"Скорость персонажа: {self.speed} ")
+        print(f"Урон Экипированного оружия: {self.damage} ")
+        print(f"Дальность экипированного оружия : {self.fRange} ")
+        print(f"Точность экипированного оружия: {self.gAccuracy} ")
+        print(f"Экипированная броня: {self.cArmor} ")
+        print(f"Физическая защита экипированной брони:{self.cPhysDef} ")
+        print(f"Магическая защита экипированной брони:{self.cMgcDef} ")
+        print(f"Текущий уровень персонажа:{self.cLvl} ")
+        print(f"Текущий опыт:{self.currentXp} ")
+        print(f"Нужно опыта до следующего уровня:{self.remainingXp-self.currentXp} ")
     def lvlGet(self,xpGave):
         self.currentXp+=xpGave
         print(f"Вы получили {xpGave} опыта ")
@@ -59,7 +86,7 @@ class Character:
         self.cLvl+=1
         print(f"У тебя теперь {self.cLvl} уровень. ")
         print(f"У тебя осталось {self.talent} очков талантов, готовых к распределению. ")
-        print(f"До следующего уровня осталось {}")
+        print(f"До следующего уровня осталось {self.remainingXp-self.currentXp}")
 name,hp,gun,speed,damage=None,None,None,None,None
 def Function():
     global name,hp,gun,speed,damage,A
@@ -222,3 +249,4 @@ armory=[Weapon("Lock18",15,20,0,40,50),
         Weapon("M249 LMG",50,40,0,70,70),
         Weapon("Bolt Action Rifle",7,80,0,100,95),
         Weapon("L3 Sniper Rifle",5,95,0,120,100)]
+def Main():
