@@ -5,9 +5,9 @@ class Character:
         self.hp=100
         self.gun=gun
         self.speed=30
-        self.damage=damage
+        self.damage=10
         self.fRange=fRange
-        self.gAccuracy=gAccuracy
+        self.gAccuracy=10
         self.cArmor=cArmor
         self.cPhysDef=cPhysDef
         self.cMgcDef=cMgcDef
@@ -23,6 +23,26 @@ class Character:
             return False
         else:
             print(f"У вас есть {self.talent} очков таланта")
+            tUp=int(input(print("Нажмите 1 чтобы прокачать здоровье"
+                  "Нажмите 2 чтобы прокачать скорость"
+                  "Нажмите 3 чтобы прокачать урон"
+                  "Нажмите 4 чтобы прокачать точность")))
+            if tUp==1:
+                self.hp+=10
+                self.talent-=1
+                return False
+            if tUp==2:
+                self.speed+=10
+                self.talent-=1
+                return False
+            if tUp==3:
+                self.damage+=5
+                self.talent-=1
+                return False
+            if tUp==4:
+                self.gAccuracy+=10
+                self.talent-=1
+                return False
 #Дописать функцию распределения очков таланта.
         print(f"У вас осталось {self.talent} очков таланта")
     def lvlGet(self,xpGave):
