@@ -108,7 +108,7 @@ def Function():
         Function()
 Function()
 class Armor:
-    def __init__(self,name,pDefence,mDefence,character):
+    def __init__(self,name,pDefence,mDefence,character=None):
         self.name=name
         self.pDefence=pDefence
         self.mDefence=mDefence
@@ -180,37 +180,19 @@ def HitChance(character,enemy,distance):
         damageP=abs(dRange)
     finalHitChance=BaseAccuracy-damageP+character.speed
     return max(15,min(100,finalHitChance))
-def LutiyFight(A,B):
-    input("Нажмите Enter ")
-    if B.speed<=A.speed:
-        B.hp-=A.damage
-        if B.hp<=0:
-            print("Противник еще не повержен, и будет насмехаться над вами, пока вы не заплатите 49.99 на DLC ПОБЕДНАЯ АННИГИЛЯЦИЯ")
-            return True
-        if B.hp>0:
-            print(B.hp,"Хп осталось у противника, НО! ЕСЛИ ВЫ КУПИТЕ DLC ПРЕВОСХОДСВО ЗА 69.99 ДО ПРОТИВНИК ПУДЕТ УМИРАТЬ ЗА ПЕРВЫЙ УДАР ОТ ДИЗМОРАЛИ.")
-            A.hp-=B.damage
-            if A.hp<=0:
-                print("ПОМЕР")
-                return True
-            else:
-                print("У тебя осталось",A.hp,"хп")
-                LutiyFight(A,B)
-    else:
-        A.hp-=B.damage
-        if A.hp<=0:
-            print("ПОМЕР")
-            return True
-        if A.hp>0:
-                print("У тебя осталось",A.hp,"хп")
-                B.hp-=A.damage
-                if B.hp<=0:
-                    print("Противник еще не повержен, и будет насмехаться над вами, пока вы не заплатите 49.99 на DLC ПОБЕДНАЯ АННИГИЛЯЦИЯ")
-                    return True
-        if B.hp>0:
-            print(B.hp,"Хп осталось у противника, НО! ЕСЛИ ВЫ КУПИТЕ DLC ПРЕВОСХОДСВО ЗА 69.99 ДО ПРОТИВНИК ПУДЕТ УМИРАТЬ ЗА ПЕРВЫЙ УДАР ОТ ДИЗМОРАЛИ.")
-            LutiyFight(A,B)
-LutiyFight(A,B)
+def LutiyFight(character,currentEnemy):
+    meet=[f"Вы встретились с {currentEnemy.name}. Как он вообще тут оказался?...",
+          f"Вы заметили {currentEnemy.name}. Не думаю, что он пойдет на контакт."]
+    print(random.choice(meet))
+    print(f"У этого противника {currentEnemy.hp}.")
+    distance=random.randint(1,100)
+    print(f"Враг в {distance} метрах от вас.")
+    while character.hp>0 and currentEnemy.hp>0:
+        print("Нажмите 1 для атаки.\nНажмите 2 для побега. \nНажмите 3 для приближения к врагу. \nНажмите 4 для отдаления от врага. \nНажмите 5 для принятия медикаментов.")
+        battleChoice=int(input())
+        if battleChoice==1:
+
+# Продумать алгоритм действий внутри битвы, для побега и динамической прокачки.
 enemy=[Enemy("Goblin", 15, "Wooden Stick", 10, 5, 30, "Burlap Clothes", 5, 5, 2, 1),
        Enemy("Goblin With A Magic Stick", 20, "Magic(?) Stick", 15, 25, 20, "Burlap Clothes", 5, 5, 3, 3),
        Enemy("Goblin, Who Thinks He's A Warrior", 30, "Wooden Sword (Kind Of)", 20, 10, 30, "Poor Wooden Shield", 10, 5, 5, 5),
