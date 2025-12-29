@@ -191,7 +191,36 @@ def LutiyFight(character,currentEnemy):
         print("Нажмите 1 для атаки.\nНажмите 2 для побега. \nНажмите 3 для приближения к врагу. \nНажмите 4 для отдаления от врага. \nНажмите 5 для принятия медикаментов.")
         battleChoice=int(input())
         if battleChoice==1:
-
+            hitChance=HitChance(character,currentEnemy,distance)
+            print(f"Шанс попадания {hitChance}.(Удалить) ")
+            if random.randint(1,100)<=hitChance:
+                damage=character.damage
+                currentEnemy.hp-=damage
+                print(f"Вы Нанесли {damage} урона.")
+                if currentEnemy.hp<=0:
+                    print(f"Вы поразили {currentEnemy.name}.")
+                    character.lvlGet(currentEnemy.giveXp)
+            else:
+                print("Вы промахнулись")
+        if battleChoice==2:
+            runawayChance=character.speed/10
+            runaway=random.random()
+            if runaway<=runawayChance:
+                break
+            else:
+                print("Вам не удалось сбежать.")
+                continue
+        if battleChoice==3:
+            #тут будет подбег, обещаю.
+            continue
+        if battleChoice==4:
+            #Тут тоже будет, правда.
+            continue
+        if battleChoice==5:
+            #И тут будет тоже, клянусь.
+            continue
+        if currentEnemy.hp>0:
+            enemyHitChance=currentEnemy.gAccuracy - max(0, (distance - currentEnemy.fRange) // 10)
 # Продумать алгоритм действий внутри битвы, для побега и динамической прокачки.
 enemy=[Enemy("Goblin", 15, "Wooden Stick", 10, 5, 30, "Burlap Clothes", 5, 5, 2, 1),
        Enemy("Goblin With A Magic Stick", 20, "Magic(?) Stick", 15, 25, 20, "Burlap Clothes", 5, 5, 3, 3),
