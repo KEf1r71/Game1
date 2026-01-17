@@ -1,6 +1,6 @@
 import random
 class Character:
-    def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,cLvl,currentXp,remainingXp,talent):
+    def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,cLvl,currentXp,remainingXp,talent,):
         self.name=name
         self.hp=100
         self.gun=gun
@@ -17,6 +17,8 @@ class Character:
         self.talent=5
         self.slot=False
         self.armorSlot=False
+        self.cAttackPoints=1
+        self.cActionPoints=2
     #создать дефолтного дебильчика с базовыми статами и выдать ему какое нибудь изначальное оружие
     def talentUse(self):
         if self.talent<=0:
@@ -180,6 +182,8 @@ def HitChance(character,enemy,distance):
         damageP=abs(dRange)
     finalHitChance=BaseAccuracy-damageP+character.speed
     return max(15,min(100,finalHitChance))
+
+
 def LutiyFight(character,currentEnemy):
     meet=[f"Вы встретились с {currentEnemy.name}. Как он вообще тут оказался?...",
           f"Вы заметили {currentEnemy.name}. Не думаю, что он пойдет на контакт."]
@@ -187,9 +191,61 @@ def LutiyFight(character,currentEnemy):
     print(f"У этого противника {currentEnemy.hp}.")
     distance=random.randint(1,100)
     print(f"Враг в {distance} метрах от вас.")
+
     while character.hp>0 and currentEnemy.hp>0:
+        attackPoints=character.cAttackPoints
+        actionPoints=character.cActionPoints
         print("Нажмите 1 для атаки.\nНажмите 2 для побега. \nНажмите 3 для приближения к врагу. \nНажмите 4 для отдаления от врага. \nНажмите 5 для принятия медикаментов.")
+        print(f"вам доступно {character.cActionPoints} очков действий и {character.cAttackpoints} очков атаки")
         battleChoice=int(input())
+
+        while attackPoints>0 or actionPoints>0:
+            if battleChoice==1:
+                if attackPoints<=0:
+                    print("У вас недостаточно очков аттаки")
+                    continue
+                attackPoints-=1
+                hitChance = HitChance(character, currentEnemy, distance)
+                print(f"Шанс попадания {hitChance}.(Удалить) ")
+                if random.randint(1, 100) <= hitChance:
+                    damage = character.damage
+                    currentEnemy.hp -= damage
+                    print(f"Вы Нанесли {damage} урона.")
+                    if currentEnemy.hp <= 0:
+                        print(f"Вы поразили {currentEnemy.name}.")
+                        character.lvlGet(currentEnemy.giveXp)
+                else:
+                    print("Вы промахнулись")
+
+            if battleChoice==2:
+                if actionPoints<=0:
+                    print("У вас недостаточно очков действия")
+                    continue
+
+                runawayChance = character.speed / 10
+                runaway = random.random()
+                if runaway <= runawayChance:
+                    break
+                else:
+                    print("Вам не удалось сбежать.")
+                    continue
+            if battleChoice==3:
+                if actionPoints<=0:
+                    print("У вас недостаточно очков действия")
+                    continue
+                actionPoints-=1
+                runDistance = character.speed * 5
+                distance -= runDistance
+                print(f"Вы пробежали {runDistance} метров к врагу.")
+                continue
+
+
+
+
+
+
+
+
         if battleChoice==1:
             hitChance=HitChance(character,currentEnemy,distance)
             print(f"Шанс попадания {hitChance}.(Удалить) ")
@@ -211,10 +267,14 @@ def LutiyFight(character,currentEnemy):
                 print("Вам не удалось сбежать.")
                 continue
         if battleChoice==3:
-            #тут будет подбег, обещаю.
+            runDistance=character.speed*5
+            distance-=runDistance
+            print(f"Вы пробежали {runDistance} метров к врагу.")
             continue
         if battleChoice==4:
-            #Тут тоже будет, правда.
+            runawayDistance=character.speed*5
+            distance+=runawayDistance
+            print(f"Вы пробежали {runDistance} метров от врага.")
             continue
         if battleChoice==5:
             #И тут будет тоже, клянусь.
