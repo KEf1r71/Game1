@@ -238,6 +238,20 @@ def LutiyFight(character,currentEnemy):
                 distance -= runDistance
                 print(f"Вы пробежали {runDistance} метров к врагу.")
                 continue
+            if battleChoice==4:
+                if actionPoints<=0:
+                    print("У вас недостаточно очков действия")
+                    continue
+                actionPoints-=1
+                runawayDistance = character.speed * 5
+                distance += runawayDistance
+                print(f"Вы пробежали {runDistance} метров от врага.")
+                continue
+            if battleChoice==5:
+                if actionPoints<=0:
+                    print("У вас недостаточно очков действия")
+                    continue
+                actionPoints-=1
 
 
 
