@@ -143,7 +143,7 @@ class Weapon:
         character.fRange-=self.range
         character.gAccuracy-=self.accuracy
 class Enemy:
-    def __init__(self,name,hp,gun,physDmg,mgcDmg,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,giveXp,lvl):
+    def __init__(self,name,hp,gun,physDmg,mgcDmg,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,giveXp,lvl,maxHp):
         self.name=name
         self.hp=hp
         self.gun=gun
@@ -156,6 +156,7 @@ class Enemy:
         self.cMgcDef=cMgcDef
         self.giveXp=giveXp
         self.lvl=lvl
+        self.maxHp=hp
     def ChoiceEnemy(self,cLvl):
         if cLvl<=50:
             eLvl=max(1,cLvl+random.choice(-5,5))
@@ -245,7 +246,7 @@ def LutiyFight(character,currentEnemy):
                 actionPoints-=1
                 runawayDistance = character.speed * 5
                 distance += runawayDistance
-                print(f"Вы пробежали {runDistance} метров от врага.")
+                print(f"Вы пробежали {runawayDistance} метров от врага.")
                 continue
             if battleChoice==5:
                 if actionPoints<=0:
@@ -260,41 +261,30 @@ def LutiyFight(character,currentEnemy):
 
 
 
-        if battleChoice==1:
-            hitChance=HitChance(character,currentEnemy,distance)
-            print(f"Шанс попадания {hitChance}.(Удалить) ")
-            if random.randint(1,100)<=hitChance:
-                damage=character.damage
-                currentEnemy.hp-=damage
-                print(f"Вы Нанесли {damage} урона.")
-                if currentEnemy.hp<=0:
-                    print(f"Вы поразили {currentEnemy.name}.")
-                    character.lvlGet(currentEnemy.giveXp)
-            else:
-                print("Вы промахнулись")
-        if battleChoice==2:
-            runawayChance=character.speed/10
-            runaway=random.random()
-            if runaway<=runawayChance:
-                break
-            else:
-                print("Вам не удалось сбежать.")
-                continue
-        if battleChoice==3:
-            runDistance=character.speed*5
-            distance-=runDistance
-            print(f"Вы пробежали {runDistance} метров к врагу.")
-            continue
-        if battleChoice==4:
-            runawayDistance=character.speed*5
-            distance+=runawayDistance
-            print(f"Вы пробежали {runDistance} метров от врага.")
-            continue
-        if battleChoice==5:
-            #И тут будет тоже, клянусь.
-            continue
+
         if currentEnemy.hp>0:
             enemyHitChance=currentEnemy.gAccuracy - max(0, (distance - currentEnemy.fRange) // 10)
+            if distance>=currentEnemy.fRange:
+                runDistance = 5 * 5
+                distance -= runDistance
+                print(f"Враг пробежал {runDistance} метров в вашу сторону.")
+                continue
+            elif distance<=currentEnemy.fRange:
+                print(f"Шанс попадания врага {enemyHitChance} (Удалить)")
+                if random.randint(1,100)<=enemyHitChance:
+                    character.hp-=currentEnemy.physDmg+currentEnemy.mgcDmg
+                    print(f"{currentEnemy.name} попадает по вам и наносит вам {currentEnemy.physDmg+currentEnemy.mgcDmg} урона.")
+                    if character.hp<=0:
+                        print("ВЫ УМЕРЛИ")
+                        return False
+                else:
+                    print(f"{currentEnemy.name} промахнулся!")
+                    continue
+            if
+
+
+
+
 # Продумать алгоритм действий внутри битвы, для побега и динамической прокачки.
 enemy=[Enemy("Goblin", 15, "Wooden Stick", 10, 5, 30, "Burlap Clothes", 5, 5, 2, 1),
        Enemy("Goblin With A Magic Stick", 20, "Magic(?) Stick", 15, 25, 20, "Burlap Clothes", 5, 5, 3, 3),
