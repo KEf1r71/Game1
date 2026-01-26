@@ -1,6 +1,6 @@
 import random
 class Character:
-    def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,cLvl,currentXp,remainingXp,talent,):
+    def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,cLvl,currentXp,remainingXp,talent,cMaxHp):
         self.name=name
         self.hp=100
         self.gun=gun
@@ -19,6 +19,7 @@ class Character:
         self.armorSlot=False
         self.cAttackPoints=1
         self.cActionPoints=2
+        self.cMaxHp=hp
     #создать дефолтного дебильчика с базовыми статами и выдать ему какое нибудь изначальное оружие
     def talentUse(self):
         if self.talent<=0:
@@ -208,10 +209,12 @@ def LutiyFight(character,currentEnemy):
                 attackPoints-=1
                 hitChance = HitChance(character, currentEnemy, distance)
                 print(f"Шанс попадания {hitChance}.(Удалить) ")
+                hit=False
                 if random.randint(1, 100) <= hitChance:
                     damage = character.damage
                     currentEnemy.hp -= damage
                     print(f"Вы Нанесли {damage} урона.")
+                    hit=True
                     if currentEnemy.hp <= 0:
                         print(f"Вы поразили {currentEnemy.name}.")
                         character.lvlGet(currentEnemy.giveXp)
@@ -280,7 +283,18 @@ def LutiyFight(character,currentEnemy):
                 else:
                     print(f"{currentEnemy.name} промахнулся!")
                     continue
-            if
+            turnCounter=0
+            if currentEnemy.hp<=currentEnemy.maxHp*0.3:
+                healHp=currentEnemy.maxHp*0.7
+                if turnCounter==0:
+                    turnCounter+=1
+                    continue
+                elif turnCounter>=1:
+                    if hit:
+                        continue
+                    else:
+                        currentEnemy.hp=healHp
+                        continue
 
 
 
@@ -325,3 +339,10 @@ armory=[Weapon("Lock18",15,20,0,40,50),
         Weapon("Bolt Action Rifle",7,80,0,100,95),
         Weapon("L3 Sniper Rifle",5,95,0,120,100)]
 def Main():
+    print("Добро пожаловать в "".")
+    input("Нажмите ENTER чтобы начать.")
+    gameName=input("Придумайте имя вашего персонажа ")
+    player1=Character(gameName,100,"Кулаки",5,5,1,50,"",0,0,1,0,100,0)
+    print(f"{player1.name} создан.")
+    print(f"Имя персонажа: {player1.name} Здоровье персонажа: {player1.hp}Оружие пернсонажа: {player1.gun} Скорость персонажа: {player1.speed} Урон персонада: {player1.damage} Дальность оружия персонажа: {player1.fRange} Точность персонажа: {player1.gAccuracy} Опыта до 2го уровня нужно: {player1.remainingXp}.")
+    #Попробовать добавить меню действий и ивенты
