@@ -1,4 +1,5 @@
 import random
+import time
 class Character:
     def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,cLvl,currentXp,remainingXp,talent,cMaxHp):
         self.name=name
@@ -20,6 +21,7 @@ class Character:
         self.cAttackPoints=1
         self.cActionPoints=2
         self.cMaxHp=hp
+        self.cash=0
     #создать дефолтного дебильчика с базовыми статами и выдать ему какое нибудь изначальное оружие
     def talentUse(self):
         if self.talent<=0:
@@ -186,6 +188,17 @@ def HitChance(character,enemy,distance):
     return max(15,min(100,finalHitChance))
 
 
+def CaseOpen(character,caseRarity)
+    global armory, armor, meds
+    print("Вы роетесь в сундуке", end="")
+    for i in range(6)
+        time.sleep(0.3)
+        print(".", end="")
+    print()
+    rarity={"Old Wooden Chest":1,"Cardboard Box":2,"Military Crate":5,"Weapon Crate":1,"Gear Crate":2,"Meds Supply Crate":3,"Handmade Weapon Box":1,"Clothing Box":2,"Thermal Bag":3}
+    oldChest=[]
+#список медикаментов, добвить оружия и добавить стату очков атаки или оптимизировать скорострельность под очки атаки.
+
 def LutiyFight(character,currentEnemy):
     meet=[f"Вы встретились с {currentEnemy.name}. Как он вообще тут оказался?...",
           f"Вы заметили {currentEnemy.name}. Не думаю, что он пойдет на контакт."]
@@ -316,7 +329,7 @@ enemy=[Enemy("Goblin", 15, "Wooden Stick", 10, 5, 30, "Burlap Clothes", 5, 5, 2,
        Enemy("Zombie", 40, "Hands? Jaw?", 45, 3, 30, "Nice Set Of Clothes", 20, 15, 35, 35),
        Enemy("Bear", 50, "Paws", 40, 2, 40, "Nothing...", 0, 0, 40, 41),
        Enemy("Armed Guy", 50, "Lock18", 40, 50, 30, "Light Gear", 20, 10, 50, 50),
-       Enemy("Armed Guy", 55, "Handmade SMG", 40, 50, 40, "Light Gear With Vest", 30, 10, 50, 50),
+       Enemy("Armed Guy", 55, "Handmade SMG", 40, 50, 40, "Light Gear With A Plate Carrier", 30, 10, 50, 50),
        Enemy("Armed Guy", 55, "Handmade Thompson", 55, 60, 50, "Roadsign Gear", 35, 10, 55, 55),]
 armor=[Armor("Burlap Clothes",10,5),
        Armor("Old Cape",5,15),
@@ -346,3 +359,8 @@ def Main():
     print(f"{player1.name} создан.")
     print(f"Имя персонажа: {player1.name} Здоровье персонажа: {player1.hp}Оружие пернсонажа: {player1.gun} Скорость персонажа: {player1.speed} Урон персонада: {player1.damage} Дальность оружия персонажа: {player1.fRange} Точность персонажа: {player1.gAccuracy} Опыта до 2го уровня нужно: {player1.remainingXp}.")
     #Попробовать добавить меню действий и ивенты
+    print("Нажмите 1 для того чтобы осмотреться.\nНажмите 2 для открытия инвентаря.")
+    menuChoice=int(input())
+    if menuChoice==1:
+        print("Осмотревшись вы обнаружили себя в густом, болотистом лесу. Вы решили пройти дальше.")
+        LutiyFight()
