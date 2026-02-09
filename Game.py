@@ -1,34 +1,38 @@
 import random
 import time
+
+
 class Character:
-    def __init__(self,name,hp,gun,speed,damage,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,cLvl,currentXp,remainingXp,talent,cMaxHp):
-        self.name=name
-        self.hp=100
-        self.gun=gun
-        self.speed=30
-        self.damage=10
-        self.fRange=5
-        self.gAccuracy=10
-        self.cArmor=cArmor
-        self.cPhysDef=cPhysDef
-        self.cMgcDef=cMgcDef
-        self.cLvl=cLvl
-        self.currentXp=currentXp
-        self.remainingXp=100
-        self.talent=5
-        self.slot=False
-        self.armorSlot=False
-        self.cAttackPoints=1
-        self.cActionPoints=2
-        self.cMaxHp=hp
-        self.cash=0
-    #создать дефолтного дебильчика с базовыми статами и выдать ему какое нибудь изначальное оружие
+    def __init__(self, name, hp, gun, speed, damage, fRange, gAccuracy, cArmor, cPhysDef, cMgcDef, cLvl, currentXp,
+                 remainingXp, talent, cMaxHp):
+        self.name = name
+        self.hp = 100
+        self.gun = gun
+        self.speed = 30
+        self.damage = 10
+        self.fRange = 5
+        self.gAccuracy = 10
+        self.cArmor = cArmor
+        self.cPhysDef = cPhysDef
+        self.cMgcDef = cMgcDef
+        self.cLvl = cLvl
+        self.currentXp = currentXp
+        self.remainingXp = 100
+        self.talent = 5
+        self.slot = False
+        self.armorSlot = False
+        self.cAttackPoints = 1
+        self.cActionPoints = 2
+        self.cMaxHp = hp
+        self.cash = 0
+
+    # создать дефолтного дебильчика с базовыми статами и выдать ему какое нибудь изначальное оружие
     def talentUse(self):
-        if self.talent<=0:
+        if self.talent <= 0:
             print("У вас нет очков таланта")
             return False
         else:
-            while self.talent>0:
+            while self.talent > 0:
                 print(f"У вас есть {self.talent} очков таланта")
                 print("Нажмите 1 чтобы прокачать здоровье")
                 print("Нажмите 2 чтобы прокачать скорость")
@@ -36,7 +40,7 @@ class Character:
                 print("Нажмите 4 чтобы прокачать точность")
                 print("Нажмите 5 чтобы посмотреть свою статистику. ")
                 print("Нажмите 6 чтобы выйти из меню прокачки. ")
-                tUp=int(input("выберите навык для прокачки "))
+                tUp = int(input("выберите навык для прокачки "))
                 if tUp == 1:
                     self.hp += 10
                     self.talent -= 1
@@ -63,6 +67,7 @@ class Character:
                     print("Не, не хочу.")
                     continue
         return True
+
     def stats(self):
         print(f"Имя персонажа: {self.name} ")
         print(f"Здоровье персонажа: {self.hp} ")
@@ -76,166 +81,234 @@ class Character:
         print(f"Магическая защита экипированной брони:{self.cMgcDef} ")
         print(f"Текущий уровень персонажа:{self.cLvl} ")
         print(f"Текущий опыт:{self.currentXp} ")
-        print(f"Нужно опыта до следующего уровня:{self.remainingXp-self.currentXp} ")
-    def lvlGet(self,xpGave):
-        self.currentXp+=xpGave
+        print(f"Нужно опыта до следующего уровня:{self.remainingXp - self.currentXp} ")
+
+    def lvlGet(self, xpGave):
+        self.currentXp += xpGave
         print(f"Вы получили {xpGave} опыта ")
-        lvlGive=0
-        while self.currentXp>self.remainingXp:
-            self.talent+=1
+        lvlGive = 0
+        while self.currentXp > self.remainingXp:
+            self.talent += 1
             self.lvlUp()
-            lvlGive+=1
-            self.currentXp-=100
+            lvlGive += 1
+            self.currentXp -= 100
         print(f"Получено {lvlGive} уровней, у вас остались нераспределенные очки талантов: {self.talent} ")
+
     def lvlUp(self):
-        self.cLvl+=1
+        self.cLvl += 1
         print(f"У тебя теперь {self.cLvl} уровень. ")
         print(f"У тебя осталось {self.talent} очков талантов, готовых к распределению. ")
-        print(f"До следующего уровня осталось {self.remainingXp-self.currentXp}")
-name,hp,gun,speed,damage=None,None,None,None,None
+        print(f"До следующего уровня осталось {self.remainingXp - self.currentXp}")
+
+
+name, hp, gun, speed, damage = None, None, None, None, None
+
+
 def Function():
-    global name,hp,gun,speed,damage,A
+    global name, hp, gun, speed, damage, A
     try:
-        if name==None:
-            name=input("введите имя класса ")
-        if hp==None:
-            hp=int(input("введите здоровье класса "))
-        if gun==None:
-            gun=input("введите оружие класса ")
-        if speed==None:
-            speed=int(input("введите скорость класса "))
-        if damage==None:
-            damage=int(input("введите урон класса "))
-        A=Character(name,hp,gun,speed,damage)
-        print(A.name,A.hp,A.gun,A.speed,A.damage)
+        if name == None:
+            name = input("введите имя класса ")
+        if hp == None:
+            hp = int(input("введите здоровье класса "))
+        if gun == None:
+            gun = input("введите оружие класса ")
+        if speed == None:
+            speed = int(input("введите скорость класса "))
+        if damage == None:
+            damage = int(input("введите урон класса "))
+        A = Character(name, hp, gun, speed, damage)
+        print(A.name, A.hp, A.gun, A.speed, A.damage)
     except ValueError:
         print("это должно быть написано цифрами, переделывай ")
         Function()
+
+
 Function()
+
+
 class Armor:
-    def __init__(self,name,pDefence,mDefence,character=None):
-        self.name=name
-        self.pDefence=pDefence
-        self.mDefence=mDefence
+    def __init__(self, name, pDefence, mDefence, character=None):
+        self.name = name
+        self.pDefence = pDefence
+        self.mDefence = mDefence
+
     def take(self, character):
-        character.armorSlot=True
-        character.PhysDefence+=self.pDefence
-        character.cMgcDefence+=self.mDefence
+        character.armorSlot = True
+        character.PhysDefence += self.pDefence
+        character.cMgcDefence += self.mDefence
+
     def drop(self, character):
-        character.armorSlot=False
-        character.PhysDefence-=self.pDefence
-        character.cMgcDefence-=self.mDefence
+        character.armorSlot = False
+        character.PhysDefence -= self.pDefence
+        character.cMgcDefence -= self.mDefence
+
+
 class Weapon:
-    def __init__(self,name,fireRate, physDmg, magicDmg,range,accuracy):
-        self.name=name
-        self.fireRate=fireRate
-        self.physDmg=physDmg
-        self.magicDmg=magicDmg
-        self.range=range
-        self.accuracy=accuracy
-    def take(self,character):
-        character.slot=True
-        character.damage+=self.physDmg+self.magicDmg
-        character.speed+=self.fireRate
-        character.fRange+=self.range
-        character.gAccuracy+=self.accuracy
-    def drop(self,character):
-        character.slot=False
-        character.damage-=self.physDmg+self.magicDmg
-        character.speed-=self.fireRate
-        character.fRange-=self.range
-        character.gAccuracy-=self.accuracy
+    def __init__(self, name, fireRate, physDmg, magicDmg, range, accuracy):
+        self.name = name
+        self.fireRate = fireRate
+        self.physDmg = physDmg
+        self.magicDmg = magicDmg
+        self.range = range
+        self.accuracy = accuracy
+
+    def take(self, character):
+        character.slot = True
+        character.damage += self.physDmg + self.magicDmg
+        character.speed += self.fireRate
+        character.fRange += self.range
+        character.gAccuracy += self.accuracy
+        character.cAttackPoints = self.fireRate // 5
+
+    def drop(self, character):
+        character.slot = False
+        character.damage -= self.physDmg + self.magicDmg
+        character.speed -= self.fireRate
+        character.fRange -= self.range
+        character.gAccuracy -= self.accuracy
+        character.cAttackPoints = 1
+
+
+class Meds:
+    def __init__(self, name, healHp, actionPointsUse):
+        self.name = name
+        self.healHp = healHp
+        self.actionPointsUse = actionPointsUse
+
+
 class Enemy:
-    def __init__(self,name,hp,gun,physDmg,mgcDmg,fRange,gAccuracy,cArmor,cPhysDef,cMgcDef,giveXp,lvl,maxHp):
-        self.name=name
-        self.hp=hp
-        self.gun=gun
-        self.physDmg=physDmg
-        self.mgcDmg=mgcDmg
-        self.fRange=fRange
-        self.gAccuracy=gAccuracy
-        self.cArmor=cArmor
-        self.cPhysDef=cPhysDef
-        self.cMgcDef=cMgcDef
-        self.giveXp=giveXp
-        self.lvl=lvl
-        self.maxHp=hp
-    def ChoiceEnemy(self,cLvl):
-        if cLvl<=50:
-            eLvl=max(1,cLvl+random.choice(-5,5))
-        elif 50<cLvl<=100:
+    def __init__(self, name, hp, gun, physDmg, mgcDmg, fRange, gAccuracy, cArmor, cPhysDef, cMgcDef, giveXp, lvl,
+                 maxHp):
+        self.name = name
+        self.hp = hp
+        self.gun = gun
+        self.physDmg = physDmg
+        self.mgcDmg = mgcDmg
+        self.fRange = fRange
+        self.gAccuracy = gAccuracy
+        self.cArmor = cArmor
+        self.cPhysDef = cPhysDef
+        self.cMgcDef = cMgcDef
+        self.giveXp = giveXp
+        self.lvl = lvl
+        self.maxHp = hp
+
+    def ChoiceEnemy(self, cLvl):
+        if cLvl <= 50:
+            eLvl = max(1, cLvl + random.choice(-5, 5))
+        elif 50 < cLvl <= 100:
             eLvl = max(1, cLvl + random.choice(-5, 10))
-        elif 100<cLvl<=200:
+        elif 100 < cLvl <= 200:
             eLvl = max(1, cLvl + random.choice(-10, 20))
         else:
             eLvl = max(1, cLvl + random.choice(-20, 40))
-        avaliableEnemy=[]
+        avaliableEnemy = []
         for i in enemy:
-            if abs(i.lvl-eLvl)<=5:
+            if abs(i.lvl - eLvl) <= 5:
                 avaliableEnemy.append(i)
+
+
 Enemy.CreateEnemy()
 
-#добавить возможность подбежать к врагу
-def HitChance(character,enemy,distance):
-    BaseAccuracy=character.gAccuracy
-    dRange=character.fRange-distance
-    if dRange>=0:
-#порезка урона
-        damageP=0
+
+# добавить возможность подбежать к врагу
+def HitChance(character, enemy, distance):
+    BaseAccuracy = character.gAccuracy
+    dRange = character.fRange - distance
+    if dRange >= 0:
+        # порезка урона
+        damageP = 0
     else:
-        damageP=abs(dRange)
-    finalHitChance=BaseAccuracy-damageP+character.speed
-    return max(15,min(100,finalHitChance))
+        damageP = abs(dRange)
+    finalHitChance = BaseAccuracy - damageP + character.speed
+    return max(15, min(100, finalHitChance))
 
 
-def CaseOpen(character,caseRarity)
+def CaseOpen(character, caseRarity):
     global armory, armor, meds
     print("Вы роетесь в сундуке", end="")
-    for i in range(6)
+    for i in range(6):
         time.sleep(0.3)
         print(".", end="")
     print()
-    rarity={"Old Wooden Chest":1,"Cardboard Box":2,"Military Crate":5,"Weapon Crate":1,"Gear Crate":2,"Meds Supply Crate":3,"Handmade Weapon Box":1,"Clothing Box":2,"Thermal Bag":3}
-    oldChest=[]
-#список медикаментов, добвить оружия и добавить стату очков атаки или оптимизировать скорострельность под очки атаки.
+    caseType = random.choice(["meds", "Weapon", "Armor"])
+    if character.lvl <= 10:
+        caseChance = random.random()
+        if caseChance <= 0.9:
+            crateRarity = 1
+        elif caseChance <= 0.99:
+            crateRarity = 2
+        else:
+            crateRarity = 3
+    if character.lvl <= 20:
+        caseChance = random.random()
+        if caseChance <= 0.7:
+            crateRarity = 1
+        elif caseChance <= 0.95:
+            crateRarity = 2
+        else:
+            crateRarity = 3
+    if character.lvl <= 40:
+        caseChance = random.random()
+        if caseChance <= 0.5:
+            crateRarity = 1
+        elif caseChance <= 0.7:
+            crateRarity = 2
+        else:
+            crateRarity = 3
+    if character.lvl <= 60:
+        caseChance = random.random()
+        if caseChance <= 0.2:
+            crateRarity = 1
+        elif caseChance <= 0.5:
+            crateRarity = 2
+        else:
+            crateRarity = 3
+    # rarity={"Old Wooden Chest":1,"Cardboard Box":2,"Military Crate":3,"Weapon Crate":1,"Gear Crate":2,"Meds Supply Crate":3,"Handmade Weapon Box":1,"Clothing Box":2,"Thermal Bag":1}
+    oldChest = []
 
-def LutiyFight(character,currentEnemy):
-    meet=[f"Вы встретились с {currentEnemy.name}. Как он вообще тут оказался?...",
-          f"Вы заметили {currentEnemy.name}. Не думаю, что он пойдет на контакт."]
+
+# список медикаментов, добвить оружия и добавить стату очков атаки или оптимизировать скорострельность под очки атаки.
+
+def LutiyFight(character, currentEnemy):
+    meet = [f"Вы встретились с {currentEnemy.name}. Как он вообще тут оказался?...",
+            f"Вы заметили {currentEnemy.name}. Не думаю, что он пойдет на контакт."]
     print(random.choice(meet))
     print(f"У этого противника {currentEnemy.hp}.")
-    distance=random.randint(1,100)
+    distance = random.randint(1, 100)
     print(f"Враг в {distance} метрах от вас.")
 
-    while character.hp>0 and currentEnemy.hp>0:
-        attackPoints=character.cAttackPoints
-        actionPoints=character.cActionPoints
-        print("Нажмите 1 для атаки.\nНажмите 2 для побега. \nНажмите 3 для приближения к врагу. \nНажмите 4 для отдаления от врага. \nНажмите 5 для принятия медикаментов.")
+    while character.hp > 0 and currentEnemy.hp > 0:
+        attackPoints = character.cAttackPoints
+        actionPoints = character.cActionPoints
+        print(
+            "Нажмите 1 для атаки.\nНажмите 2 для побега. \nНажмите 3 для приближения к врагу. \nНажмите 4 для отдаления от врага. \nНажмите 5 для принятия медикаментов.")
         print(f"вам доступно {character.cActionPoints} очков действий и {character.cAttackpoints} очков атаки")
-        battleChoice=int(input())
+        battleChoice = int(input())
 
-        while attackPoints>0 or actionPoints>0:
-            if battleChoice==1:
-                if attackPoints<=0:
+        while attackPoints > 0 or actionPoints > 0:
+            if battleChoice == 1:
+                if attackPoints <= 0:
                     print("У вас недостаточно очков аттаки")
                     continue
-                attackPoints-=1
+                attackPoints -= 1
                 hitChance = HitChance(character, currentEnemy, distance)
                 print(f"Шанс попадания {hitChance}.(Удалить) ")
-                hit=False
+                hit = False
                 if random.randint(1, 100) <= hitChance:
                     damage = character.damage
                     currentEnemy.hp -= damage
                     print(f"Вы Нанесли {damage} урона.")
-                    hit=True
+                    hit = True
                     if currentEnemy.hp <= 0:
                         print(f"Вы поразили {currentEnemy.name}.")
                         character.lvlGet(currentEnemy.giveXp)
                 else:
                     print("Вы промахнулись")
 
-            if battleChoice==2:
-                if actionPoints<=0:
+            if battleChoice == 2:
+                if actionPoints <= 0:
                     print("У вас недостаточно очков действия")
                     continue
 
@@ -246,121 +319,154 @@ def LutiyFight(character,currentEnemy):
                 else:
                     print("Вам не удалось сбежать.")
                     continue
-            if battleChoice==3:
-                if actionPoints<=0:
+            if battleChoice == 3:
+                if actionPoints <= 0:
                     print("У вас недостаточно очков действия")
                     continue
-                actionPoints-=1
+                actionPoints -= 1
                 runDistance = character.speed * 5
                 distance -= runDistance
                 print(f"Вы пробежали {runDistance} метров к врагу.")
                 continue
-            if battleChoice==4:
-                if actionPoints<=0:
+            if battleChoice == 4:
+                if actionPoints <= 0:
                     print("У вас недостаточно очков действия")
                     continue
-                actionPoints-=1
+                actionPoints -= 1
                 runawayDistance = character.speed * 5
                 distance += runawayDistance
                 print(f"Вы пробежали {runawayDistance} метров от врага.")
                 continue
-            if battleChoice==5:
-                if actionPoints<=0:
+            if battleChoice == 5:
+                if actionPoints <= 0:
                     print("У вас недостаточно очков действия")
                     continue
-                actionPoints-=1
+                actionPoints -= 1
 
-
-
-
-
-
-
-
-
-        if currentEnemy.hp>0:
-            enemyHitChance=currentEnemy.gAccuracy - max(0, (distance - currentEnemy.fRange) // 10)
-            if distance>=currentEnemy.fRange:
+        if currentEnemy.hp > 0:
+            enemyHitChance = currentEnemy.gAccuracy - max(0, (distance - currentEnemy.fRange) // 10)
+            if distance >= currentEnemy.fRange:
                 runDistance = 5 * 5
                 distance -= runDistance
                 print(f"Враг пробежал {runDistance} метров в вашу сторону.")
                 continue
-            elif distance<=currentEnemy.fRange:
+            elif distance <= currentEnemy.fRange:
                 print(f"Шанс попадания врага {enemyHitChance} (Удалить)")
-                if random.randint(1,100)<=enemyHitChance:
-                    character.hp-=currentEnemy.physDmg+currentEnemy.mgcDmg
-                    print(f"{currentEnemy.name} попадает по вам и наносит вам {currentEnemy.physDmg+currentEnemy.mgcDmg} урона.")
-                    if character.hp<=0:
+                if random.randint(1, 100) <= enemyHitChance:
+                    character.hp -= currentEnemy.physDmg + currentEnemy.mgcDmg
+                    print(
+                        f"{currentEnemy.name} попадает по вам и наносит вам {currentEnemy.physDmg + currentEnemy.mgcDmg} урона.")
+                    if character.hp <= 0:
                         print("ВЫ УМЕРЛИ")
                         return False
                 else:
                     print(f"{currentEnemy.name} промахнулся!")
                     continue
-            turnCounter=0
-            if currentEnemy.hp<=currentEnemy.maxHp*0.3:
-                healHp=currentEnemy.maxHp*0.7
-                if turnCounter==0:
-                    turnCounter+=1
+            turnCounter = 0
+            if currentEnemy.hp <= currentEnemy.maxHp * 0.3:
+                healHp = currentEnemy.maxHp * 0.7
+                if turnCounter == 0:
+                    turnCounter += 1
                     continue
-                elif turnCounter>=1:
+                elif turnCounter >= 1:
                     if hit:
                         continue
                     else:
-                        currentEnemy.hp=healHp
+                        currentEnemy.hp = healHp
                         continue
 
 
-
-
 # Продумать алгоритм действий внутри битвы, для побега и динамической прокачки.
-enemy=[Enemy("Goblin", 15, "Wooden Stick", 10, 5, 30, "Burlap Clothes", 5, 5, 2, 1),
-       Enemy("Goblin With A Magic Stick", 20, "Magic(?) Stick", 15, 25, 20, "Burlap Clothes", 5, 5, 3, 3),
-       Enemy("Goblin, Who Thinks He's A Warrior", 30, "Wooden Sword (Kind Of)", 20, 10, 30, "Poor Wooden Shield", 10, 5, 5, 5),
-       Enemy("Skeleton", 25, "Stone Sword", 20, 13, 30, "Nothing...", 0, 0, 7, 10),
-       Enemy("Skeleton Wizard", 25, "Magic Stick", 23, 25, 40, "Old Magic Cape", 10, 15, 10, 10),
-       Enemy("A Guy With A Knife", 30, "Bayonet", 30, 5, 60, "Nice Set Of Clothes", 20, 10, 10, 15),
-       Enemy("Beginner Wizard", 30, "A Spell Book (Over 100 Spells inside!)", 20, 25, 40, "Enchanted Clothes (Whole set for only 9.99!)", 5, 15, 13, 15),
-       Enemy("Armed Bum", 30, "Handmade Sword", 40, 5, 20, "Coat", 10, 10, 20, 20),
-       Enemy("FireArmed Bum", 30, "Poor Handmade Hammer Pistol", 30, 13, 25, "Coat", 10, 10, 22, 20),
-       Enemy("Wolf", 50, "Teeth, I guess?", 40, 3, 50, "Nothing...", 5, 5, 30, 25),
-       Enemy("An Alright Wizard", 30, "Magic Stick. A really simple one", 30, 35, 40, "Simple Enchanted Clothes", 15, 25, 25, 25),
-       Enemy("Expirienced Armed Bum", 35, "Handmade Sword", 45, 7, 25, "Coat", 15, 10, 30, 30),
-       Enemy("Goblin Wizard", 30, "Magic Stick 3000", 35, 40, 55, "Enchanted Set Of Clothes", 15, 20, 32, 30),
-       Enemy("Zombie", 40, "Hands? Jaw?", 45, 3, 30, "Nice Set Of Clothes", 20, 15, 35, 35),
-       Enemy("Bear", 50, "Paws", 40, 2, 40, "Nothing...", 0, 0, 40, 41),
-       Enemy("Armed Guy", 50, "Lock18", 40, 50, 30, "Light Gear", 20, 10, 50, 50),
-       Enemy("Armed Guy", 55, "Handmade SMG", 40, 50, 40, "Light Gear With A Plate Carrier", 30, 10, 50, 50),
-       Enemy("Armed Guy", 55, "Handmade Thompson", 55, 60, 50, "Roadsign Gear", 35, 10, 55, 55),]
-armor=[Armor("Burlap Clothes",10,5),
-       Armor("Old Cape",5,15),
-       Armor("Nice Set Of Clothes",20,10),
-       Armor("Enchanted Magic Clothes",7,20),
-       Armor("Roadsign Armor Set",35,10),
-       Armor("Wizard Clothes",15,35),
-       Armor("High Quality Metal Gear",50,15),
-       Armor("Military Grade Armor",60,15),
-       Armor("Anti-Radiation Suit",30,30),
-       Armor("Enchanted Old Wizard's Set",20,50),]
-armory=[Weapon("Lock18",15,20,0,40,50),
-        Weapon("MagickStick3000",5,0,27,25,40),
-        Weapon("Bayonet",10,40,0,5,90),
-        Weapon("Handmade Assault Rifle",20,50,0,80,60),
-        Weapon("Military Grade Assault Rifle",35,40,0,90,65),
-        Weapon("Enchanted Magic Stick",10,0,40,40,50),
-        Weapon("Old Magic Book",15,5,35,30,70),
-        Weapon("M249 LMG",50,40,0,70,70),
-        Weapon("Bolt Action Rifle",7,80,0,100,95),
-        Weapon("L3 Sniper Rifle",5,95,0,120,100)]
+enemy = [Enemy("Goblin", 15, "Wooden Stick", 10, 5, 30, "Burlap Clothes", 5, 5, 2, 1),
+         Enemy("Goblin With A Magic Stick", 20, "Magic(?) Stick", 15, 25, 20, "Burlap Clothes", 5, 5, 3, 3),
+         Enemy("Goblin, Who Thinks He's A Warrior", 30, "Wooden Sword (Kind Of)", 20, 10, 30, "Poor Wooden Shield", 10,
+               5, 5, 5),
+         Enemy("Skeleton", 25, "Stone Sword", 20, 13, 30, "Nothing...", 0, 0, 7, 10),
+         Enemy("Skeleton Wizard", 25, "Magic Stick", 23, 25, 40, "Old Magic Cape", 10, 15, 10, 10),
+         Enemy("A Guy With A Knife", 30, "Bayonet", 30, 5, 60, "Nice Set Of Clothes", 20, 10, 10, 15),
+         Enemy("Beginner Wizard", 30, "A Spell Book (Over 100 Spells inside!)", 20, 25, 40,
+               "Enchanted Clothes (Whole set for only 9.99!)", 5, 15, 13, 15),
+         Enemy("Armed Bum", 30, "Handmade Sword", 40, 5, 20, "Coat", 10, 10, 20, 20),
+         Enemy("FireArmed Bum", 30, "Poor Handmade Hammer Pistol", 30, 13, 25, "Coat", 10, 10, 22, 20),
+         Enemy("Wolf", 50, "Teeth, I guess?", 40, 3, 50, "Nothing...", 5, 5, 30, 25),
+         Enemy("An Alright Wizard", 30, "Magic Stick. A really simple one", 30, 35, 40, "Simple Enchanted Clothes", 15,
+               25, 25, 25),
+         Enemy("Expirienced Armed Bum", 35, "Handmade Sword", 45, 7, 25, "Coat", 15, 10, 30, 30),
+         Enemy("Goblin Wizard", 30, "Magic Stick 3000", 35, 40, 55, "Enchanted Set Of Clothes", 15, 20, 32, 30),
+         Enemy("Zombie", 40, "Hands? Jaw?", 45, 3, 30, "Nice Set Of Clothes", 20, 15, 35, 35),
+         Enemy("Bear", 50, "Paws", 40, 2, 40, "Nothing...", 0, 0, 40, 41),
+         Enemy("Armed Guy", 50, "Lock18", 40, 50, 30, "Light Gear", 20, 10, 50, 50),
+         Enemy("Armed Guy", 55, "Handmade SMG", 40, 50, 40, "Light Gear With A Plate Carrier", 30, 10, 50, 50),
+         Enemy("Armed Guy", 55, "Handmade Thompson", 55, 60, 50, "Roadsign Gear", 35, 10, 55, 55), ]
+
+armor = [Armor("Burlap Clothes", 10, 5),
+         Armor("Old Cape", 5, 15),
+         Armor("Nice Set Of Clothes", 20, 10),
+         Armor("Enchanted Magic Clothes", 7, 20),
+         Armor("Roadsign Armor Set", 35, 10),
+         Armor("Wizard Clothes", 15, 35),
+         Armor("High Quality Metal Gear", 50, 15),
+         Armor("Military Grade Armor", 60, 15),
+         Armor("Anti-Radiation Suit", 30, 30),
+         Armor("Enchanted Old Wizard's Set", 20, 50), ]
+
+armory = [Weapon("Simple Selfmade Rifle", 5, 40, 0, 30, 35),
+          Weapon("Simple Axe", 30, 30, 0, 7, 60),
+          Weapon("Lock18", 15, 20, 0, 40, 50),
+          Weapon("MagickStick3000", 5, 0, 27, 25, 40),
+          Weapon("Bayonet", 10, 40, 0, 5, 90),
+          Weapon("Handmade Assault Rifle", 20, 50, 0, 80, 60),
+          Weapon("Military Grade Assault Rifle", 35, 40, 0, 90, 65),
+          Weapon("Enchanted Magic Stick", 10, 0, 40, 40, 50),
+          Weapon("Old Magic Book", 15, 5, 35, 30, 70),
+          Weapon("M249 LMG", 50, 40, 0, 70, 70),
+          Weapon("Bolt Action Rifle", 7, 80, 0, 100, 95),
+          Weapon("L3 Sniper Rifle", 5, 95, 0, 120, 100)]
+
+meds = [Meds("Bandage", 5, 1)
+    , Meds("Syringe", 25, 1),
+        Meds("AFAK", 400, 2),
+        Meds("", 150, 1)]
+
+{"meds": {
+    1:  # предмет,
+        2:
+# предмет
+},
+"weapon": {
+
+}
+}
+
+case_types = {
+    'meds': {
+        1: "Аптечка новичка",
+        2: "Медицинский набор",
+        3: "Военный медицицинский комплект"
+    },
+    'weapons': {
+        1: "Ящик с простым оружием",
+        2: "Ящик с оружием среднего качества",
+        3: "Ящик с элитным оружием"
+    },
+    'armor': {
+        1: "Коробка с простой одеждой",
+        2: "Коробка с защитной экипировкой",
+        3: "Коробка с продвинутой бронёй"
+    }}
+
+
 def Main():
-    print("Добро пожаловать в "".")
+    print("Добро пожаловать в .")
     input("Нажмите ENTER чтобы начать.")
-    gameName=input("Придумайте имя вашего персонажа ")
-    player1=Character(gameName,100,"Кулаки",5,5,1,50,"",0,0,1,0,100,0)
+    gameName = input("Придумайте имя вашего персонажа ")
+    player1 = Character(gameName, 100, "Кулаки", 5, 5, 1, 50, "", 0, 0, 1, 0, 100, 0)
     print(f"{player1.name} создан.")
-    print(f"Имя персонажа: {player1.name} Здоровье персонажа: {player1.hp}Оружие пернсонажа: {player1.gun} Скорость персонажа: {player1.speed} Урон персонада: {player1.damage} Дальность оружия персонажа: {player1.fRange} Точность персонажа: {player1.gAccuracy} Опыта до 2го уровня нужно: {player1.remainingXp}.")
-    #Попробовать добавить меню действий и ивенты
+    print(
+        f"Имя персонажа: {player1.name} Здоровье персонажа: {player1.hp}Оружие пернсонажа: {player1.gun} Скорость персонажа: {player1.speed} Урон персонада: {player1.damage} Дальность оружия персонажа: {player1.fRange} Точность персонажа: {player1.gAccuracy} Опыта до 2го уровня нужно: {player1.remainingXp}.")
+    # Попробовать добавить меню действий и ивенты
     print("Нажмите 1 для того чтобы осмотреться.\nНажмите 2 для открытия инвентаря.")
-    menuChoice=int(input())
-    if menuChoice==1:
+    menuChoice = int(input())
+    if menuChoice == 1:
         print("Осмотревшись вы обнаружили себя в густом, болотистом лесу. Вы решили пройти дальше.")
         LutiyFight()
