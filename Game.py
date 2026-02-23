@@ -265,8 +265,14 @@ def CaseOpen(character, caseRarity):
             crateRarity = 2
         else:
             crateRarity = 3
-    # rarity={"Old Wooden Chest":1,"Cardboard Box":2,"Military Crate":3,"Weapon Crate":1,"Gear Crate":2,"Meds Supply Crate":3,"Handmade Weapon Box":1,"Clothing Box":2,"Thermal Bag":1}
-    oldChest = []
+    crateName=case_types[caseType][crateRarity]
+    print(f"Вы нашли {crateName}")
+
+
+def CrateItems(caseType,crateRarity):
+    items=[]
+    if caseType == "meds":
+        random.choice()
 
 
 # список медикаментов, добвить оружия и добавить стату очков атаки или оптимизировать скорострельность под очки атаки.
@@ -410,7 +416,7 @@ armor = [Armor("Burlap Clothes", 10, 5),
          Armor("Anti-Radiation Suit", 30, 30),
          Armor("Enchanted Old Wizard's Set", 20, 50), ]
 
-armory = [Weapon("Simple Selfmade Rifle", 5, 40, 0, 30, 35),
+armory = [Weapon("Simple Handmade Rifle", 5, 40, 0, 30, 35),
           Weapon("Simple Axe", 30, 30, 0, 7, 60),
           Weapon("Lock18", 15, 20, 0, 40, 50),
           Weapon("MagickStick3000", 5, 0, 27, 25, 40),
@@ -424,26 +430,50 @@ armory = [Weapon("Simple Selfmade Rifle", 5, 40, 0, 30, 35),
           Weapon("L3 Sniper Rifle", 5, 95, 0, 120, 100)]
 
 meds = [Meds("Bandage", 5, 1)
-    , Meds("Syringe", 25, 1),
+    , Meds("Propital Syringe", 150, 1),
         Meds("AFAK", 400, 2),
         Meds("", 150, 1)]
 
-#доделать список ниже
-{"meds": {
-    1:  # предмет,
-        2:
-# предмет
+# доделать список ниже
+CrateDrop = {"meds": {
+    1: [Meds("Bandage", 5, 1)],
+    2: [Meds("AFAK", 400, 2)],
+    3: [Meds("Propital Syringe", 150, 1)]
+    # предмет
 },
-"weapon": {
+    "weapon": {
+        1: [Weapon("Simple Handmade Rifle", 5, 40, 0, 30, 35),
+            Weapon("Simple Axe", 30, 30, 0, 7, 60),
+            Weapon("Lock18", 15, 20, 0, 40, 50),
+            Weapon("MagickStick3000", 5, 0, 27, 25, 40),
+            Weapon("Bayonet", 10, 40, 0, 5, 90)],
+        2: [Weapon("Handmade Assault Rifle", 20, 50, 0, 80, 60),
+            Weapon("Enchanted Magic Stick", 10, 0, 40, 40, 50)],
+        3: [Weapon("Old Magic Book", 15, 5, 35, 30, 70),
+            Weapon("M249 LMG", 50, 40, 0, 70, 70),
+            Weapon("Bolt Action Rifle", 7, 80, 0, 100, 95),
+            Weapon("L3 Sniper Rifle", 5, 95, 0, 120, 100)],
+        "armor": {
+            1: [Armor("Burlap Clothes", 10, 5),
+                Armor("Old Cape", 5, 15)],
+            2: [Armor("Nice Set Of Clothes", 20, 10),
+                Armor("Enchanted Magic Clothes", 7, 20),
+                Armor("Roadsign Armor Set", 35, 10),
+                Armor("Wizard Clothes", 15, 35),
+                Armor("Anti-Radiation Suit", 30, 30)],
+            3: [Armor("High Quality Metal Gear", 50, 15),
+                Armor("Military Grade Armor", 60, 15),
+                Armor("Enchanted Old Wizard's Set", 20, 50)]
+        }
 
-}
+    }
 }
 
 case_types = {
     'meds': {
-        1: "Аптечка новичка",
-        2: "Медицинский набор",
-        3: "Военный медицицинский комплект"
+        1: "Car First Aid Kit",
+        2: "Survival Kit",
+        3: "Military First Aid Kit"
     },
     'weapons': {
         1: "Ящик с простым оружием",
