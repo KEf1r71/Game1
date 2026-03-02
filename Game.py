@@ -25,6 +25,7 @@ class Character:
         self.cActionPoints = 2
         self.cMaxHp = hp
         self.cash = 0
+        self.medsSlot = False
 
     # создать дефолтного дебильчика с базовыми статами и выдать ему какое нибудь изначальное оружие
     def talentUse(self):
@@ -176,6 +177,12 @@ class Meds:
         self.healHp = healHp
         self.actionPointsUse = actionPointsUse
 
+        def take(self, character, item):
+            character.medsSlot = item
+
+        def drop(self, character):
+            character.medsSlot = False
+
 
 class Enemy:
     def __init__(self, name, hp, gun, physDmg, mgcDmg, fRange, gAccuracy, cArmor, cPhysDef, cMgcDef, giveXp, lvl,
@@ -225,6 +232,38 @@ def HitChance(character, enemy, distance):
     return max(15, min(100, finalHitChance))
 
 
+def CrateItems(caseType, crateRarity):
+    items = []
+    # поменять проверку сначала типа потом редкости снизу
+    if crateRarity == 1:
+        if caseType == "meds":
+            return random.choice(CrateDrop["meds"][1])
+    if crateRarity == 2:
+        if caseType == "meds":
+            return random.choice(CrateDrop["meds"][2])
+    if crateRarity == 3:
+        if caseType == "meds":
+            return random.choice(CrateDrop["meds"][3])
+    if crateRarity == 1:
+        if caseType == "weapon":
+            return random.choice(CrateDrop["weapon"][1])
+    if crateRarity == 2:
+        if caseType == "weapon":
+            return random.choice(CrateDrop["weapon"][2])
+    if crateRarity == 3:
+        if caseType == "weapon":
+            return random.choice(CrateDrop["weapon"][3])
+    if crateRarity == 1:
+        if caseType == "armor":
+            return random.choice(CrateDrop["armor"][1])
+    if crateRarity == 2:
+        if caseType == "armor":
+            return random.choice(CrateDrop["armor"][2])
+    if crateRarity == 3:
+        if caseType == "armor":
+            return random.choice(CrateDrop["armor"][3])
+
+
 def CaseOpen(character, caseRarity):
     global armory, armor, meds
     print("Вы роетесь в сундуке", end="")
@@ -265,15 +304,18 @@ def CaseOpen(character, caseRarity):
             crateRarity = 2
         else:
             crateRarity = 3
-    crateName=case_types[caseType][crateRarity]
-    print(f"Вы нашли {crateName}")
+    crateName = case_types[caseType][crateRarity]
+    givenDrop = CrateItems(caseType, crateRarity)
+    print(f"Вы нашли {givenDrop} в {crateName}")
+    print("1 чтобы экипировать")
+    print("2 чтобы оставить")
+    if caseType == "Weapon":
+        dropChoice = int(input())
+        if dropChoice == 1:
+            Weapon.take(character)
+        else:
+            Weapon.drop(character)
 
-
-def CrateItems(caseType,crateRarity):
-    items=[]
-    if caseType == "meds":
-        random.choice()
-#дописать функцию сверху
 
 # список медикаментов, добвить оружия и добавить стату очков атаки или оптимизировать скорострельность под очки атаки.
 
