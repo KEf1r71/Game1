@@ -315,6 +315,18 @@ def CaseOpen(character, caseRarity):
             Weapon.take(character)
         else:
             Weapon.drop(character)
+    if caseType == "Meds":
+        dropChoice = int(input())
+        if dropChoice == 1:
+            Meds.take(character)
+        else:
+            Meds.drop(character)
+    if caseType == "Armor":
+        dropChoice = int(input())
+        if dropChoice == 1:
+            Armor.take(character)
+        else:
+            Armor.drop(character)
 
 
 # список медикаментов, добвить оружия и добавить стату очков атаки или оптимизировать скорострельность под очки атаки.
@@ -529,6 +541,30 @@ case_types = {
     }}
 
 
+def Events(character, currentEnemy):
+    events = ["Trader", "Fight", "CrateFound", "NothingHappened"]
+    eventchance = [13, 60, 7, 20]
+    eventchoice = random.choices(events, weights=eventchance)
+    if eventchoice == "Trader":
+        pass
+    elif eventchoice == "Fight":
+        LutiyFight(character, currentEnemy)
+        return True
+    elif eventchoice == "CrateFound":
+        print("потом напишу")
+        CaseOpen(character)
+        return True
+    elif eventchoice == "NothingHappened":
+        print("Вы шли довольно долго не найдя абсолютно ничего и решили передохнуть.")
+        print("Персонаж отдыхает", end="")
+        for i in range(6):
+            time.sleep(0.3)
+            print(".", end="")
+        print()
+        return True
+    return False
+
+
 def Main():
     print("Добро пожаловать в .")
     input("Нажмите ENTER чтобы начать.")
@@ -536,10 +572,13 @@ def Main():
     player1 = Character(gameName, 100, "Кулаки", 5, 5, 1, 50, "", 0, 0, 1, 0, 100, 0)
     print(f"{player1.name} создан.")
     print(
-        f"Имя персонажа: {player1.name} Здоровье персонажа: {player1.hp}Оружие пернсонажа: {player1.gun} Скорость персонажа: {player1.speed} Урон персонада: {player1.damage} Дальность оружия персонажа: {player1.fRange} Точность персонажа: {player1.gAccuracy} Опыта до 2го уровня нужно: {player1.remainingXp}.")
+        f"Имя персонажа: {player1.name} Здоровье персонажа: {player1.hp}Оружие персонажа: {player1.gun} Скорость персонажа: {player1.speed} Урон персонажа: {player1.damage} Дальность оружия персонажа: {player1.fRange} Точность персонажа: {player1.gAccuracy} Опыта до 2го уровня нужно: {player1.remainingXp}.")
     # Попробовать добавить меню действий и ивенты
-    print("Нажмите 1 для того чтобы осмотреться.\nНажмите 2 для открытия инвентаря.")
-    menuChoice = int(input())
-    if menuChoice == 1:
-        print("Осмотревшись вы обнаружили себя в густом, болотистом лесу. Вы решили пройти дальше.")
-        LutiyFight()
+    while player1.hp > 0:
+        print("Нажмите 1 для того чтобы осмотреться.\nНажмите 2 для открытия инвентаря.")
+        menuChoice = int(input())
+        if menuChoice == 1:
+            print("Осмотревшись вы обнаружили себя в густом, болотистом лесу. Вы решили пройти дальше.")
+            currentEnemyM = Enemy.ChoiceEnemy(player1.cLvl)
+            Events(player1,currentEnemyM)
+#добавить больше кнопок для выбора, дописать инвентарь создав список в персонаже и напимать функцию которая этот список показывает при помощи цикла for и  обращения к конкретным атрибутам предмета
