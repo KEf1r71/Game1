@@ -1,5 +1,18 @@
 import random
 import time
+from enum import Enum
+
+class Rarity(Enum):
+    common="Обычный"
+    rare="Редкий"
+    expensive="Ценный"
+class Item:
+    def __init__(self, name, rarity, stat,itemType):
+        self.name = name
+        self.rarity = rarity
+        self.stat = stat
+        self.itemType = itemType
+    def
 
 
 class Character:
@@ -26,6 +39,32 @@ class Character:
         self.cMaxHp = hp
         self.cash = 0
         self.medsSlot = False
+        self.inventory=[]
+
+
+    def inventoryView(self):
+        if not self.inventory:
+            print("Рюкзак пуст. ")
+            return True
+        else:
+            for i, item in enumerate(self.inventory,0):
+                print(f"{i} {item.name,item.rarity}")
+            return True
+        return False
+
+
+
+    def inventory(self,i):
+        self.inventoryView()
+        invItem=self.inventory[i]
+        if invItem.itemType == "meds":
+            self.hp += invItem.stat
+        #добавить ограничения по типу невозможности хилиться больше максимального количества хп
+
+
+
+
+
 
     # создать дефолтного дебильчика с базовыми статами и выдать ему какое нибудь изначальное оружие
     def talentUse(self):
@@ -581,4 +620,4 @@ def Main():
             print("Осмотревшись вы обнаружили себя в густом, болотистом лесу. Вы решили пройти дальше.")
             currentEnemyM = Enemy.ChoiceEnemy(player1.cLvl)
             Events(player1,currentEnemyM)
-#добавить больше кнопок для выбора, дописать инвентарь создав список в персонаже и напимать функцию которая этот список показывает при помощи цикла for и  обращения к конкретным атрибутам предмета
+#добавить больше кнопок для выбора, дописать инвентарь создав список в персонаже и напимать функцию которая этот список показывает при помощи цикла for и  обращения к конкретным атрибутам
