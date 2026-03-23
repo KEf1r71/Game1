@@ -12,7 +12,9 @@ class Item:
         self.rarity = rarity
         self.stat = stat
         self.itemType = itemType
-    def
+    @staticmethod
+    def ChooseItem(createDrop,Rarity,Type):
+        return random.choice(createDrop[Type][Rarity])
 
 
 class Character:
@@ -58,7 +60,19 @@ class Character:
         self.inventoryView()
         invItem=self.inventory[i]
         if invItem.itemType == "meds":
-            self.hp += invItem.stat
+            if self.hp+invItem.stat > self.cMaxHp:
+                self.hp = self.cMaxHp
+                self.inventory.remove(invItem)
+                print(f"Вы восстановили здоровье до максимума ({self.cMaxHp})")
+            elif self.hp == self.cMaxHp:
+                #медикамент не тратится
+                print("У вас максимальный запас здоровья, вы не можете использовать медикамент.")
+            else:
+                self.hp += invItem.stat
+                self.inventory.remove(invItem)
+                print(f"Вы восстановили здоровье до {self.hp}/{self.cMaxHp}")
+
+
         #добавить ограничения по типу невозможности хилиться больше максимального количества хп
 
 
@@ -216,16 +230,19 @@ class Meds:
         self.healHp = healHp
         self.actionPointsUse = actionPointsUse
 
-        def take(self, character, item):
-            character.medsSlot = item
+    def take(self, character, item):
+        character.medsSlot = item
+        character.inventory.append(item)
+        return f"{item.name} был добавлен в инвентарь"
 
-        def drop(self, character):
-            character.medsSlot = False
+    def drop(self, character, item):
+        character.medsSlot = False
+        character.inventory.remove(item)
+        return f"{item.name} был удален из инвентаря"
 
 
 class Enemy:
-    def __init__(self, name, hp, gun, physDmg, mgcDmg, fRange, gAccuracy, cArmor, cPhysDef, cMgcDef, giveXp, lvl,
-                 maxHp):
+    def __init__(self, name, hp, gun, physDmg, mgcDmg, fRange, gAccuracy, cArmor, cPhysDef, cMgcDef, giveXp, lvl,):
         self.name = name
         self.hp = hp
         self.gun = gun
