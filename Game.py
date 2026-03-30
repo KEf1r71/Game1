@@ -15,11 +15,11 @@ class Item:
     @staticmethod
     def ChooseItem(createDrop,Rarity,Type):
         return random.choice(createDrop[Type][Rarity])
+        return random.choice(createDrop[Type][Rarity])
 
 
 class Character:
-    def __init__(self, name, hp, gun, speed, damage, fRange, gAccuracy, cArmor, cPhysDef, cMgcDef, cLvl, currentXp,
-                 remainingXp, talent, cMaxHp):
+    def __init__(self, name, hp, gun, cArmor, cPhysDef, cMgcDef, cLvl, currentXp):
         self.name = name
         self.hp = 100
         self.gun = gun
@@ -158,27 +158,27 @@ class Character:
 name, hp, gun, speed, damage = None, None, None, None, None
 
 
-def Function():
-    global name, hp, gun, speed, damage, A
-    try:
-        if name == None:
-            name = input("введите имя класса ")
-        if hp == None:
-            hp = int(input("введите здоровье класса "))
-        if gun == None:
-            gun = input("введите оружие класса ")
-        if speed == None:
-            speed = int(input("введите скорость класса "))
-        if damage == None:
-            damage = int(input("введите урон класса "))
-        A = Character(name, hp, gun, speed, damage)
-        print(A.name, A.hp, A.gun, A.speed, A.damage)
-    except ValueError:
-        print("это должно быть написано цифрами, переделывай ")
-        Function()
+# def Function():
+#     global name, hp, gun, speed, damage, A
+#     try:
+#         if name == None:
+#             name = input("введите имя класса ")
+#         if hp == None:
+#             hp = int(input("введите здоровье класса "))
+#         if gun == None:
+#             gun = input("введите оружие класса ")
+#         if speed == None:
+#             speed = int(input("введите скорость класса "))
+#         if damage == None:
+#             damage = int(input("введите урон класса "))
+#         A = Character(name, hp, gun, speed, damage)
+#         print(A.name, A.hp, A.gun, A.speed, A.damage)
+#     except ValueError:
+#         print("это должно быть написано цифрами, переделывай ")
+#         Function()
 
 
-Function()
+#Function()
 
 
 class Armor:
@@ -242,7 +242,7 @@ class Meds:
 
 
 class Enemy:
-    def __init__(self, name, hp, gun, physDmg, mgcDmg, fRange, gAccuracy, cArmor, cPhysDef, cMgcDef, giveXp, lvl,):
+    def __init__(self, name, hp, gun, physDmg, mgcDmg, fRange,cArmor, gAccuracy, cPhysDef, cMgcDef, giveXp, lvl,):
         self.name = name
         self.hp = hp
         self.gun = gun
@@ -256,23 +256,23 @@ class Enemy:
         self.giveXp = giveXp
         self.lvl = lvl
         self.maxHp = hp
-
-    def ChoiceEnemy(self, cLvl):
+    @staticmethod
+    def ChoiceEnemy(cLvl):
         if cLvl <= 50:
-            eLvl = max(1, cLvl + random.choice(-5, 5))
+            eLvl = max(1, cLvl + random.randint(-5, 5))
         elif 50 < cLvl <= 100:
-            eLvl = max(1, cLvl + random.choice(-5, 10))
+            eLvl = max(1, cLvl + random.randint(-5, 10))
         elif 100 < cLvl <= 200:
-            eLvl = max(1, cLvl + random.choice(-10, 20))
+            eLvl = max(1, cLvl + random.randint(-10, 20))
         else:
-            eLvl = max(1, cLvl + random.choice(-20, 40))
+            eLvl = max(1, cLvl + random.randint(-20, 40))
         avaliableEnemy = []
         for i in enemy:
             if abs(i.lvl - eLvl) <= 5:
                 avaliableEnemy.append(i)
+        return random.choice(avaliableEnemy)
 
 
-Enemy.CreateEnemy()
 
 
 # добавить возможность подбежать к врагу
@@ -400,15 +400,16 @@ def LutiyFight(character, currentEnemy):
         actionPoints = character.cActionPoints
         print(
             "Нажмите 1 для атаки.\nНажмите 2 для побега. \nНажмите 3 для приближения к врагу. \nНажмите 4 для отдаления от врага. \nНажмите 5 для принятия медикаментов.")
-        print(f"вам доступно {character.cActionPoints} очков действий и {character.cAttackpoints} очков атаки")
-        battleChoice = int(input())
+
 
         while attackPoints > 0 or actionPoints > 0:
+            print(f"вам доступно {character.cActionPoints} очков действий и {character.cAttackPoints} очков атаки")
+            battleChoice = int(input())
             if battleChoice == 1:
                 if attackPoints <= 0:
                     print("У вас недостаточно очков аттаки")
                     continue
-                attackPoints -= 1
+                character.cAttackPoints -= 1
                 hitChance = HitChance(character, currentEnemy, distance)
                 print(f"Шанс попадания {hitChance}.(Удалить) ")
                 hit = False
@@ -439,7 +440,7 @@ def LutiyFight(character, currentEnemy):
                 if actionPoints <= 0:
                     print("У вас недостаточно очков действия")
                     continue
-                actionPoints -= 1
+                character.cActionPoints -= 1
                 runDistance = character.speed * 5
                 distance -= runDistance
                 print(f"Вы пробежали {runDistance} метров к врагу.")
@@ -448,7 +449,7 @@ def LutiyFight(character, currentEnemy):
                 if actionPoints <= 0:
                     print("У вас недостаточно очков действия")
                     continue
-                actionPoints -= 1
+                character.cActionPoints -= 1
                 runawayDistance = character.speed * 5
                 distance += runawayDistance
                 print(f"Вы пробежали {runawayDistance} метров от врага.")
@@ -457,27 +458,27 @@ def LutiyFight(character, currentEnemy):
                 if actionPoints <= 0:
                     print("У вас недостаточно очков действия")
                     continue
-                actionPoints -= 1
+                character.cActionPoints -= 1
 
-        if currentEnemy.hp > 0:
-            enemyHitChance = currentEnemy.gAccuracy - max(0, (distance - currentEnemy.fRange) // 10)
-            if distance >= currentEnemy.fRange:
-                runDistance = 5 * 5
-                distance -= runDistance
-                print(f"Враг пробежал {runDistance} метров в вашу сторону.")
-                continue
-            elif distance <= currentEnemy.fRange:
-                print(f"Шанс попадания врага {enemyHitChance} (Удалить)")
-                if random.randint(1, 100) <= enemyHitChance:
-                    character.hp -= currentEnemy.physDmg + currentEnemy.mgcDmg
-                    print(
-                        f"{currentEnemy.name} попадает по вам и наносит вам {currentEnemy.physDmg + currentEnemy.mgcDmg} урона.")
-                    if character.hp <= 0:
-                        print("ВЫ УМЕРЛИ")
-                        return False
-                else:
-                    print(f"{currentEnemy.name} промахнулся!")
+            if currentEnemy.hp > 0:
+                enemyHitChance = currentEnemy.gAccuracy - max(0, (distance - currentEnemy.fRange) // 10)
+                if distance >= currentEnemy.fRange:
+                    runDistance = 5 * 5
+                    distance -= runDistance
+                    print(f"Враг пробежал {runDistance} метров в вашу сторону.")
                     continue
+                elif distance <= currentEnemy.fRange:
+                    print(f"Шанс попадания врага {enemyHitChance} (Удалить)")
+                    if random.randint(1, 100) <= enemyHitChance:
+                        character.hp -= currentEnemy.physDmg + currentEnemy.mgcDmg
+                        print(
+                            f"{currentEnemy.name} попадает по вам и наносит вам {currentEnemy.physDmg + currentEnemy.mgcDmg} урона.")
+                        if character.hp <= 0:
+                            print("ВЫ УМЕРЛИ")
+                            return False
+                    else:
+                        print(f"{currentEnemy.name} промахнулся!")
+                        continue
             turnCounter = 0
             if currentEnemy.hp <= currentEnemy.maxHp * 0.3:
                 healHp = currentEnemy.maxHp * 0.7
@@ -493,27 +494,27 @@ def LutiyFight(character, currentEnemy):
 
 
 # Продумать алгоритм действий внутри битвы, для побега и динамической прокачки.
-enemy = [Enemy("Goblin", 15, "Wooden Stick", 10, 5, 30, "Burlap Clothes", 5, 5, 2, 1),
-         Enemy("Goblin With A Magic Stick", 20, "Magic(?) Stick", 15, 25, 20, "Burlap Clothes", 5, 5, 3, 3),
+enemy = [Enemy("Goblin", 15, "Wooden Stick", 10, 5, 30, "Burlap Clothes", 5, 5, 2, 1,1),
+         Enemy("Goblin With A Magic Stick", 20, "Magic(?) Stick", 15, 25, 20, "Burlap Clothes", 5, 5, 3, 3,1),
          Enemy("Goblin, Who Thinks He's A Warrior", 30, "Wooden Sword (Kind Of)", 20, 10, 30, "Poor Wooden Shield", 10,
-               5, 5, 5),
-         Enemy("Skeleton", 25, "Stone Sword", 20, 13, 30, "Nothing...", 0, 0, 7, 10),
-         Enemy("Skeleton Wizard", 25, "Magic Stick", 23, 25, 40, "Old Magic Cape", 10, 15, 10, 10),
-         Enemy("A Guy With A Knife", 30, "Bayonet", 30, 5, 60, "Nice Set Of Clothes", 20, 10, 10, 15),
+               5, 5, 5,3),
+         Enemy("Skeleton", 25, "Stone Sword", 20, 13, 30, "Nothing...", 10, 0, 7, 10,3),
+         Enemy("Skeleton Wizard", 25, "Magic Stick", 23, 25, 40, "Old Magic Cape", 10, 15, 10, 10,5),
+         Enemy("A Guy With A Knife", 30, "Bayonet", 30, 5, 60, "Nice Set Of Clothes", 20, 10, 10, 15,5),
          Enemy("Beginner Wizard", 30, "A Spell Book (Over 100 Spells inside!)", 20, 25, 40,
-               "Enchanted Clothes (Whole set for only 9.99!)", 5, 15, 13, 15),
-         Enemy("Armed Bum", 30, "Handmade Sword", 40, 5, 20, "Coat", 10, 10, 20, 20),
-         Enemy("FireArmed Bum", 30, "Poor Handmade Hammer Pistol", 30, 13, 25, "Coat", 10, 10, 22, 20),
-         Enemy("Wolf", 50, "Teeth, I guess?", 40, 3, 50, "Nothing...", 5, 5, 30, 25),
+               "Enchanted Clothes (Whole set for only 9.99!)", 5, 15, 13, 15,7),
+         Enemy("Armed Bum", 30, "Handmade Sword", 40, 5, 20, "Coat", 10, 10, 20, 20,8),
+         Enemy("FireArmed Bum", 30, "Poor Handmade Hammer Pistol", 30, 13, 25, "Coat", 10, 10, 22, 20,10),
+         Enemy("Wolf", 50, "Teeth, I guess?", 40, 3, 50, "Nothing...", 5, 5, 30, 25,10),
          Enemy("An Alright Wizard", 30, "Magic Stick. A really simple one", 30, 35, 40, "Simple Enchanted Clothes", 15,
-               25, 25, 25),
-         Enemy("Expirienced Armed Bum", 35, "Handmade Sword", 45, 7, 25, "Coat", 15, 10, 30, 30),
-         Enemy("Goblin Wizard", 30, "Magic Stick 3000", 35, 40, 55, "Enchanted Set Of Clothes", 15, 20, 32, 30),
-         Enemy("Zombie", 40, "Hands? Jaw?", 45, 3, 30, "Nice Set Of Clothes", 20, 15, 35, 35),
-         Enemy("Bear", 50, "Paws", 40, 2, 40, "Nothing...", 0, 0, 40, 41),
-         Enemy("Armed Guy", 50, "Lock18", 40, 50, 30, "Light Gear", 20, 10, 50, 50),
-         Enemy("Armed Guy", 55, "Handmade SMG", 40, 50, 40, "Light Gear With A Plate Carrier", 30, 10, 50, 50),
-         Enemy("Armed Guy", 55, "Handmade Thompson", 55, 60, 50, "Roadsign Gear", 35, 10, 55, 55), ]
+               25, 25, 25,13),
+         Enemy("Expirienced Armed Bum", 35, "Handmade Sword", 45, 7, 25, "Coat", 15, 10, 30, 30,15),
+         Enemy("Goblin Wizard", 30, "Magic Stick 3000", 35, 40, 55, "Enchanted Set Of Clothes", 15, 20, 32, 30,15),
+         Enemy("Zombie", 40, "Hands? Jaw?", 45, 3, 30, "Nice Set Of Clothes", 20, 15, 35, 35,15),
+         Enemy("Bear", 50, "Paws", 40, 2, 40, "Nothing...", 10, 0, 40, 41,20),
+         Enemy("Armed Guy", 50, "Lock18", 40, 50, 30, "Light Gear", 20, 10, 50, 50,20),
+         Enemy("Armed Guy", 55, "Handmade SMG", 40, 50, 40, "Light Gear With A Plate Carrier", 30, 10, 50, 50,23),
+         Enemy("Armed Guy", 55, "Handmade Thompson", 55, 60, 50, "Roadsign Gear", 35, 10, 55, 55,25), ]
 
 armor = [Armor("Burlap Clothes", 10, 5),
          Armor("Old Cape", 5, 15),
@@ -600,7 +601,7 @@ case_types = {
 def Events(character, currentEnemy):
     events = ["Trader", "Fight", "CrateFound", "NothingHappened"]
     eventchance = [13, 60, 7, 20]
-    eventchoice = random.choices(events, weights=eventchance)
+    eventchoice = random.choices(events, weights=eventchance)[0]
     if eventchoice == "Trader":
         pass
     elif eventchoice == "Fight":
@@ -625,10 +626,10 @@ def Main():
     print("Добро пожаловать в .")
     input("Нажмите ENTER чтобы начать.")
     gameName = input("Придумайте имя вашего персонажа ")
-    player1 = Character(gameName, 100, "Кулаки", 5, 5, 1, 50, "", 0, 0, 1, 0, 100, 0)
+    player1 = Character(gameName, 100, "Кулаки", 5, 5, 1, 1,0)
     print(f"{player1.name} создан.")
     print(
-        f"Имя персонажа: {player1.name} Здоровье персонажа: {player1.hp}Оружие персонажа: {player1.gun} Скорость персонажа: {player1.speed} Урон персонажа: {player1.damage} Дальность оружия персонажа: {player1.fRange} Точность персонажа: {player1.gAccuracy} Опыта до 2го уровня нужно: {player1.remainingXp}.")
+        f"Имя персонажа: {player1.name}.\nЗдоровье персонажа: {player1.hp}.\nОружие персонажа: {player1.gun},\nСкорость персонажа: {player1.speed}.\nУрон персонажа: {player1.damage}.\n Дальность оружия персонажа: {player1.fRange}.\nТочность персонажа: {player1.gAccuracy}.\nОпыта до 2го уровня нужно: {player1.remainingXp}.")
     # Попробовать добавить меню действий и ивенты
     while player1.hp > 0:
         print("Нажмите 1 для того чтобы осмотреться.\nНажмите 2 для открытия инвентаря.")
@@ -636,5 +637,6 @@ def Main():
         if menuChoice == 1:
             print("Осмотревшись вы обнаружили себя в густом, болотистом лесу. Вы решили пройти дальше.")
             currentEnemyM = Enemy.ChoiceEnemy(player1.cLvl)
-            Events(player1,currentEnemyM)
+            print(Events(player1,currentEnemyM))
 #добавить больше кнопок для выбора, дописать инвентарь создав список в персонаже и напимать функцию которая этот список показывает при помощи цикла for и  обращения к конкретным атрибутам
+Main()
