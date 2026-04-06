@@ -398,15 +398,19 @@ def LutiyFight(character, currentEnemy):
     while character.hp > 0 and currentEnemy.hp > 0:
         attackPoints = character.cAttackPoints
         actionPoints = character.cActionPoints
-        print(
-            "Нажмите 1 для атаки.\nНажмите 2 для побега. \nНажмите 3 для приближения к врагу. \nНажмите 4 для отдаления от врага. \nНажмите 5 для принятия медикаментов.")
+
 
 
         while attackPoints > 0 or actionPoints > 0:
+            if character.cActionPoints <= 0 and character.cAttackPoints <= 0:
+                print("Вы потратили все очки действий и аттаки, ход передается врагу.")
+                break
+            print(
+                "Нажмите 1 для атаки.\nНажмите 2 для побега. \nНажмите 3 для приближения к врагу. \nНажмите 4 для отдаления от врага. \nНажмите 5 для принятия медикаментов. \nНажмите 6 для передачи хода врагу.")
             print(f"вам доступно {character.cActionPoints} очков действий и {character.cAttackPoints} очков атаки")
             battleChoice = int(input())
             if battleChoice == 1:
-                if attackPoints <= 0:
+                if character.cAttackPoints <= 0:
                     print("У вас недостаточно очков аттаки")
                     continue
                 character.cAttackPoints -= 1
@@ -423,21 +427,23 @@ def LutiyFight(character, currentEnemy):
                         character.lvlGet(currentEnemy.giveXp)
                 else:
                     print("Вы промахнулись")
-
+                    continue
             if battleChoice == 2:
-                if actionPoints <= 0:
+                if character.cActionPoints <= 0:
                     print("У вас недостаточно очков действия")
                     continue
 
-                runawayChance = character.speed / 10
+                runawayChance = character.speed / 100
                 runaway = random.random()
                 if runaway <= runawayChance:
-                    break
+                    print("Вы успешно скрылись от глаз неприятеля.")
+                    return True
                 else:
                     print("Вам не удалось сбежать.")
+                    character.cActionPoints -= 1
                     continue
             if battleChoice == 3:
-                if actionPoints <= 0:
+                if character.cActionPoints <= 0:
                     print("У вас недостаточно очков действия")
                     continue
                 character.cActionPoints -= 1
@@ -446,7 +452,7 @@ def LutiyFight(character, currentEnemy):
                 print(f"Вы пробежали {runDistance} метров к врагу.")
                 continue
             if battleChoice == 4:
-                if actionPoints <= 0:
+                if character.cActionPoints <= 0:
                     print("У вас недостаточно очков действия")
                     continue
                 character.cActionPoints -= 1
@@ -455,46 +461,49 @@ def LutiyFight(character, currentEnemy):
                 print(f"Вы пробежали {runawayDistance} метров от врага.")
                 continue
             if battleChoice == 5:
-                if actionPoints <= 0:
+                if character.cActionPoints <= 0:
                     print("У вас недостаточно очков действия")
                     continue
                 character.cActionPoints -= 1
+            if battleChoice == 6:
+                break
 
-            if currentEnemy.hp > 0:
-                enemyHitChance = currentEnemy.gAccuracy - max(0, (distance - currentEnemy.fRange) // 10)
-                if distance >= currentEnemy.fRange:
-                    runDistance = 5 * 5
-                    distance -= runDistance
-                    print(f"Враг пробежал {runDistance} метров в вашу сторону.")
+
+        if currentEnemy.hp > 0:
+            enemyHitChance = currentEnemy.gAccuracy - max(0, (distance - currentEnemy.fRange) // 10)
+            if distance >= currentEnemy.fRange:
+                runDistance = 5 * 5
+                distance -= runDistance
+                print(f"Враг пробежал {runDistance} метров в вашу сторону.")
+                continue
+            elif distance <= currentEnemy.fRange:
+                print(f"Шанс попадания врага {enemyHitChance} (Удалить)")
+                if random.randint(1, 100) <= enemyHitChance:
+                    character.hp -= currentEnemy.physDmg + currentEnemy.mgcDmg
+                    print(
+                        f"{currentEnemy.name} попадает по вам и наносит вам {currentEnemy.physDmg + currentEnemy.mgcDmg} урона.")
+                    character.cActionPoints += 2
+                    character.cAttackPoints += 1
+                    if character.hp <= 0:
+                        print("ВЫ УМЕРЛИ")
+                        return False
+                else:
+                    print(f"{currentEnemy.name} промахнулся!")
+                    character.cActionPoints += 2
+                    character.cAttackPoints += 1
+
+        turnCounter = 0
+        if currentEnemy.hp <= currentEnemy.maxHp * 0.3:
+            healHp = currentEnemy.maxHp * 0.7
+            if turnCounter == 0:
+                turnCounter += 1
+                continue
+            elif turnCounter >= 1:
+                if hit:
                     continue
-                elif distance <= currentEnemy.fRange:
-                    print(f"Шанс попадания врага {enemyHitChance} (Удалить)")
-                    if random.randint(1, 100) <= enemyHitChance:
-                        character.hp -= currentEnemy.physDmg + currentEnemy.mgcDmg
-                        print(
-                            f"{currentEnemy.name} попадает по вам и наносит вам {currentEnemy.physDmg + currentEnemy.mgcDmg} урона.")
-                        character.cActionPoints = character.cActionPoints
-                        character.cAttackPoints = character.cAttackPoints
-                        if character.hp <= 0:
-                            print("ВЫ УМЕРЛИ")
-                            return False
-                    else:
-                        print(f"{currentEnemy.name} промахнулся!")
-                        character.cActionPoints = character.cActionPoints
-                        character.cAttackPoints = character.cAttackPoints
-                        continue
-            turnCounter = 0
-            if currentEnemy.hp <= currentEnemy.maxHp * 0.3:
-                healHp = currentEnemy.maxHp * 0.7
-                if turnCounter == 0:
-                    turnCounter += 1
+                else:
+                    currentEnemy.hp = healHp
                     continue
-                elif turnCounter >= 1:
-                    if hit:
-                        continue
-                    else:
-                        currentEnemy.hp = healHp
-                        continue
 
 
 # Продумать алгоритм действий внутри битвы, для побега и динамической прокачки.
@@ -613,8 +622,9 @@ def Events(character, currentEnemy):
         return True
     elif eventchoice == "CrateFound":
         print("потом напишу")
-        CaseOpen(character)
-        return True
+        # CaseOpen(character)
+        # return True
+        pass
     elif eventchoice == "NothingHappened":
         print("Вы шли довольно долго не найдя абсолютно ничего и решили передохнуть.")
         print("Персонаж отдыхает", end="")
