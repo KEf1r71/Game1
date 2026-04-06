@@ -473,11 +473,15 @@ def LutiyFight(character, currentEnemy):
                         character.hp -= currentEnemy.physDmg + currentEnemy.mgcDmg
                         print(
                             f"{currentEnemy.name} попадает по вам и наносит вам {currentEnemy.physDmg + currentEnemy.mgcDmg} урона.")
+                        character.cActionPoints = character.cActionPoints
+                        character.cAttackPoints = character.cAttackPoints
                         if character.hp <= 0:
                             print("ВЫ УМЕРЛИ")
                             return False
                     else:
                         print(f"{currentEnemy.name} промахнулся!")
+                        character.cActionPoints = character.cActionPoints
+                        character.cAttackPoints = character.cAttackPoints
                         continue
             turnCounter = 0
             if currentEnemy.hp <= currentEnemy.maxHp * 0.3:
