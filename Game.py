@@ -32,7 +32,7 @@ class Character:
         self.cMgcDef = cMgcDef
         self.cLvl = cLvl
         self.currentXp = currentXp
-        self.remainingXp = 100
+        self.remainingXp = 10
         self.talent = 5
         self.slot = False
         self.armorSlot = False
@@ -285,7 +285,7 @@ def HitChance(character, enemy, distance):
     else:
         damageP = abs(dRange)
     finalHitChance = BaseAccuracy - damageP + character.speed
-    return max(15, min(100, finalHitChance))
+    return max(50, min(100, finalHitChance))
 
 
 def CrateItems(caseType, crateRarity):
@@ -396,12 +396,14 @@ def LutiyFight(character, currentEnemy):
     print(f"Враг в {distance} метрах от вас.")
 
     while character.hp > 0 and currentEnemy.hp > 0:
+        character.cAttackPoints = 1
+        character.cActionPoints = 2
         attackPoints = character.cAttackPoints
         actionPoints = character.cActionPoints
 
 
 
-        while attackPoints > 0 or actionPoints > 0:
+        while (attackPoints > 0 or actionPoints > 0) and currentEnemy.hp>=0:
             if character.cActionPoints <= 0 and character.cAttackPoints <= 0:
                 print("Вы потратили все очки действий и аттаки, ход передается врагу.")
                 break
@@ -425,6 +427,7 @@ def LutiyFight(character, currentEnemy):
                     if currentEnemy.hp <= 0:
                         print(f"Вы поразили {currentEnemy.name}.")
                         character.lvlGet(currentEnemy.giveXp)
+                        break
                 else:
                     print("Вы промахнулись")
                     continue
@@ -643,14 +646,19 @@ def Main():
     player1 = Character(gameName, 100, "Кулаки", 5, 5, 1, 1,0)
     print(f"{player1.name} создан.")
     print(
-        f"Имя персонажа: {player1.name}.\nЗдоровье персонажа: {player1.hp}.\nОружие персонажа: {player1.gun},\nСкорость персонажа: {player1.speed}.\nУрон персонажа: {player1.damage}.\n Дальность оружия персонажа: {player1.fRange}.\nТочность персонажа: {player1.gAccuracy}.\nОпыта до 2го уровня нужно: {player1.remainingXp}.")
+        f"Имя персонажа: {player1.name}.\nЗдоровье персонажа: {player1.hp}.\nОружие персонажа: {player1.gun},\nСкорость персонажа: {player1.speed}.\nУрон персонажа: {player1.damage}.\n Дальность оружия персонажа: {player1.fRange}.\nТочность персонажа: {player1.gAccuracy}.\nОпыта до следующего уровня осталось: {player1.remainingXp}.")
     # Попробовать добавить меню действий и ивенты
     while player1.hp > 0:
-        print("Нажмите 1 для того чтобы осмотреться.\nНажмите 2 для открытия инвентаря.")
+        print("Нажмите 1 для того чтобы осмотреться.\nНажмите 2 для открытия инвентаря.\nНажмите 3 для просмотра характеристик.")
         menuChoice = int(input())
         if menuChoice == 1:
             print("Осмотревшись вы обнаружили себя в густом, болотистом лесу. Вы решили пройти дальше.")
             currentEnemyM = Enemy.ChoiceEnemy(player1.cLvl)
-            print(Events(player1,currentEnemyM))
+            Events(player1,currentEnemyM)
+        if menuChoice == 2:
+            player1.inventoryView()
+        if menuChoice == 3:
+            print(
+                f"Имя персонажа: {player1.name}.\nЗдоровье персонажа: {player1.hp}.\nОружие персонажа: {player1.gun},\nСкорость персонажа: {player1.speed}.\nУрон персонажа: {player1.damage}.\n Дальность оружия персонажа: {player1.fRange}.\nТочность персонажа: {player1.gAccuracy}.\nОпыта до следующего уровня осталось: {player1.remainingXp}.\nТекущий уровень: {player1.cLvl}")
 #добавить больше кнопок для выбора, дописать инвентарь создав список в персонаже и напимать функцию которая этот список показывает при помощи цикла for и  обращения к конкретным атрибутам
 Main()
