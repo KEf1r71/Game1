@@ -94,7 +94,11 @@ class Character:
                 print("Нажмите 4 чтобы прокачать точность")
                 print("Нажмите 5 чтобы посмотреть свою статистику. ")
                 print("Нажмите 6 чтобы выйти из меню прокачки. ")
-                tUp = int(input("выберите навык для прокачки "))
+                try:
+                    tUp = int(input("выберите навык для прокачки "))
+                except ValueError as e:
+                    print(e)
+                    continue
                 if tUp == 1:
                     self.hp += 10
                     self.talent -= 1
@@ -156,29 +160,6 @@ class Character:
 
 
 name, hp, gun, speed, damage = None, None, None, None, None
-
-
-# def Function():
-#     global name, hp, gun, speed, damage, A
-#     try:
-#         if name == None:
-#             name = input("введите имя класса ")
-#         if hp == None:
-#             hp = int(input("введите здоровье класса "))
-#         if gun == None:
-#             gun = input("введите оружие класса ")
-#         if speed == None:
-#             speed = int(input("введите скорость класса "))
-#         if damage == None:
-#             damage = int(input("введите урон класса "))
-#         A = Character(name, hp, gun, speed, damage)
-#         print(A.name, A.hp, A.gun, A.speed, A.damage)
-#     except ValueError:
-#         print("это должно быть написано цифрами, переделывай ")
-#         Function()
-
-
-#Function()
 
 
 class Armor:
@@ -366,19 +347,28 @@ def CaseOpen(character, caseRarity):
     print("1 чтобы экипировать")
     print("2 чтобы оставить")
     if caseType == "Weapon":
-        dropChoice = int(input())
+        try:
+            dropChoice = int(input())
+        except ValueError as e:
+            print(e)
         if dropChoice == 1:
             Weapon.take(character)
         else:
             Weapon.drop(character)
     if caseType == "Meds":
-        dropChoice = int(input())
+        try:
+            dropChoice = int(input())
+        except ValueError as e:
+            print(e)
         if dropChoice == 1:
             Meds.take(character)
         else:
             Meds.drop(character)
     if caseType == "Armor":
-        dropChoice = int(input())
+        try:
+            dropChoice = int(input())
+        except ValueError as e:
+            print(e)
         if dropChoice == 1:
             Armor.take(character)
         else:
@@ -410,7 +400,11 @@ def LutiyFight(character, currentEnemy):
             print(
                 "Нажмите 1 для атаки.\nНажмите 2 для побега. \nНажмите 3 для приближения к врагу. \nНажмите 4 для отдаления от врага. \nНажмите 5 для принятия медикаментов. \nНажмите 6 для передачи хода врагу.")
             print(f"вам доступно {character.cActionPoints} очков действий и {character.cAttackPoints} очков атаки")
-            battleChoice = int(input())
+            try:
+                battleChoice = int(input())
+            except ValueError as e:
+                print(e)
+                continue
             if battleChoice == 1:
                 if character.cAttackPoints <= 0:
                     print("У вас недостаточно очков аттаки")
@@ -489,6 +483,7 @@ def LutiyFight(character, currentEnemy):
                     character.cAttackPoints += 1
                     if character.hp <= 0:
                         print("ВЫ УМЕРЛИ")
+                        print(f"Был достигнут{character.cLvl}.")
                         return False
                 else:
                     print(f"{currentEnemy.name} промахнулся!")
@@ -649,8 +644,15 @@ def Main():
         f"Имя персонажа: {player1.name}.\nЗдоровье персонажа: {player1.hp}.\nОружие персонажа: {player1.gun},\nСкорость персонажа: {player1.speed}.\nУрон персонажа: {player1.damage}.\n Дальность оружия персонажа: {player1.fRange}.\nТочность персонажа: {player1.gAccuracy}.\nОпыта до следующего уровня осталось: {player1.remainingXp}.")
     # Попробовать добавить меню действий и ивенты
     while player1.hp > 0:
-        print("Нажмите 1 для того чтобы осмотреться.\nНажмите 2 для открытия инвентаря.\nНажмите 3 для просмотра характеристик.")
-        menuChoice = int(input())
+        print("Нажмите 1 для того чтобы осмотреться.\nНажмите 2 для открытия инвентаря.\nНажмите 3 для просмотра характеристик.\nНажмите 4 для распределения очков таланта.\nНажмите 0 для закрытия игры.")
+        try:
+            menuChoice = int(input())
+        except (ValueError, TypeError, UnboundLocalError):
+            print("Ошибка")
+            continue
+        except TypeError:
+            print("Диалога не получится, пиши цифру.")
+            continue
         if menuChoice == 1:
             print("Осмотревшись вы обнаружили себя в густом, болотистом лесу. Вы решили пройти дальше.")
             currentEnemyM = Enemy.ChoiceEnemy(player1.cLvl)
@@ -659,6 +661,10 @@ def Main():
             player1.inventoryView()
         if menuChoice == 3:
             print(
-                f"Имя персонажа: {player1.name}.\nЗдоровье персонажа: {player1.hp}.\nОружие персонажа: {player1.gun},\nСкорость персонажа: {player1.speed}.\nУрон персонажа: {player1.damage}.\n Дальность оружия персонажа: {player1.fRange}.\nТочность персонажа: {player1.gAccuracy}.\nОпыта до следующего уровня осталось: {player1.remainingXp}.\nТекущий уровень: {player1.cLvl}")
+                f"Имя персонажа: {player1.name}.\nЗдоровье персонажа: {player1.hp}.\nОружие персонажа: {player1.gun},\nСкорость персонажа: {player1.speed}.\nУрон персонажа: {player1.damage}.\nДальность оружия персонажа: {player1.fRange}.\nТочность персонажа: {player1.gAccuracy}.\nОпыта до следующего уровня осталось: {player1.remainingXp}.\nТекущий уровень: {player1.cLvl}")
+        if menuChoice == 4:
+            player1.talentUse()
+        if menuChoice == 0:
+            break
 #добавить больше кнопок для выбора, дописать инвентарь создав список в персонаже и напимать функцию которая этот список показывает при помощи цикла for и  обращения к конкретным атрибутам
 Main()
