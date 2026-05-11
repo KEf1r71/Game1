@@ -46,6 +46,8 @@ class Character:
         self.cash = 0
         self.medsSlot = False
         self.inventory = []
+        self.weapon = None
+        self.armor = None
 
     def inventoryView(self):
         if not self.inventory:
@@ -53,12 +55,18 @@ class Character:
             return True
         else:
             for i, item in enumerate(self.inventory, 0):
-                print(f"{i} {item.name}")
+                equip = ""
+                if item is self.weapon:
+                    equip = "Экипировано"
+                if item is self.armor:
+                    equip = "Экипировано"
+                print(f"{i}, {item.name}, {equip}")
             return True
         return False
 
-    def inventory(self, i):
+    def medsUse(self):
         self.inventoryView()
+        i=int(input("Введите номер предмета для использования. "))
         invItem = self.inventory[i]
         if invItem.itemType == "meds":
             if self.hp + invItem.stat > self.cMaxHp:
@@ -73,7 +81,7 @@ class Character:
                 self.inventory.remove(invItem)
                 print(f"Вы восстановили здоровье до {self.hp}/{self.cMaxHp}")
 
-        # добавить ограничения по типу невозможности хилиться больше максимального количества хп
+    # добавить ограничения по типу невозможности хилиться больше максимального количества хп
 
     # создать дефолтного дебильчика с базовыми статами и выдать ему какое нибудь изначальное оружие
     def talentUse(self):
@@ -190,6 +198,7 @@ class Character:
         self.cPhysDef -= item.pDefence
         self.cMgcDef -= item.mDefence
 
+
 name, hp, gun, speed, damage = None, None, None, None, None
 
 
@@ -200,8 +209,6 @@ class Armor:
         self.mDefence = mDefence
 
 
-
-
 class Weapon:
     def __init__(self, name, fireRate, physDmg, magicDmg, range, accuracy):
         self.name = name
@@ -210,8 +217,6 @@ class Weapon:
         self.magicDmg = magicDmg
         self.range = range
         self.accuracy = accuracy
-
-
 
 
 class Meds:
@@ -368,9 +373,9 @@ def CaseOpen(character):
         except ValueError as e:
             print(e)
         if dropChoice == 1:
-            print("Решив что вы слишком горды для 3го класса брони, эта железка осталась на полу.")
+            character.take_armor(givenDrop)
         else:
-            character.drop_armor(givenDrop)
+            print("Решив что вы слишком горды для 3го класса брони, эта железка осталась на полу.")
 
 
 # список медикаментов, добвить оружия и добавить стату очков атаки или оптимизировать скорострельность под очки атаки.
@@ -569,21 +574,20 @@ CrateDrop = {"meds": {
         3: [Weapon("Old Magic Book", 15, 5, 35, 30, 70),
             Weapon("M249 LMG", 50, 40, 0, 70, 70),
             Weapon("Bolt Action Rifle", 7, 80, 0, 100, 95),
-            Weapon("L3 Sniper Rifle", 5, 95, 0, 120, 100)],
-        "armor": {
-            1: [Armor("Burlap Clothes", 10, 5),
-                Armor("Old Cape", 5, 15)],
-            2: [Armor("Nice Set Of Clothes", 20, 10),
-                Armor("Enchanted Magic Clothes", 7, 20),
-                Armor("Roadsign Armor Set", 35, 10),
-                Armor("Wizard Clothes", 15, 35),
-                Armor("Anti-Radiation Suit", 30, 30)],
-            3: [Armor("High Quality Metal Gear", 50, 15),
-                Armor("Military Grade Armor", 60, 15),
-                Armor("Enchanted Old Wizard's Set", 20, 50)]
-        }
-
+            Weapon("L3 Sniper Rifle", 5, 95, 0, 120, 100)]},
+    "armor": {
+        1: [Armor("Burlap Clothes", 10, 5),
+            Armor("Old Cape", 5, 15)],
+        2: [Armor("Nice Set Of Clothes", 20, 10),
+            Armor("Enchanted Magic Clothes", 7, 20),
+            Armor("Roadsign Armor Set", 35, 10),
+            Armor("Wizard Clothes", 15, 35),
+            Armor("Anti-Radiation Suit", 30, 30)],
+        3: [Armor("High Quality Metal Gear", 50, 15),
+            Armor("Military Grade Armor", 60, 15),
+            Armor("Enchanted Old Wizard's Set", 20, 50)]
     }
+
 }
 
 case_types = {
@@ -655,14 +659,39 @@ def Main():
             Events(player1, currentEnemyM)
         if menuChoice == 2:
             player1.inventoryView()
+            if player1.inventory:
+                print("1 для использования. 2 для экипировки. 3 для выхода.")
+                try:
+                    invChoice = int(input())
+                except (ValueError, TypeError, UnboundLocalError):
+                    print("Ошибка")
+                    continue
+                except TypeError:
+                    print("Диалога не получится, пиши цифру.")
+                    continue
+                if invChoice == 1:
+                    player1.medsUse()
+                if invChoice == 2:
+                    i=int(input("Введите номер предмета для экипировки. "))
+                    if i >= 0 and i < len(player1.inventory):
+                        invItem=player1.inventory[i]
+                        if invItem.itemType=="weapon":
+                            player1.take_weapon(invItem)
+                        elif invItem.itemType=="armor":
+                            player1.take_armor(invItem)
+                        else:
+                            print("Невозможно экпировать этот предмет.")
+                    else:
+                        print("Неправильный номер предмета.")
+                if invChoice == 3:
+                    continue
         if menuChoice == 3:
             print(
-                f"Имя персонажа: {player1.name}.\nЗдоровье персонажа: {player1.hp}.\nОружие персонажа: {player1.gun},\nСкорость персонажа: {player1.speed}.\nУрон персонажа: {player1.damage}.\nДальность оружия персонажа: {player1.fRange}.\nТочность персонажа: {player1.gAccuracy}.\nОпыта до следующего уровня осталось: {player1.remainingXp}.\nТекущий уровень: {player1.cLvl}")
+                f"Имя персонажа: {player1.name}.\nЗдоровье персонажа: {player1.hp}.\nУровень защиты брони персонажа: {player1.cArmor}\nОружие персонажа: {player1.gun},\nСкорость персонажа: {player1.speed}.\nУрон персонажа: {player1.damage}.\nДальность оружия персонажа: {player1.fRange}.\nТочность персонажа: {player1.gAccuracy}.\nОпыта до следующего уровня осталось: {player1.remainingXp}.\nТекущий уровень: {player1.cLvl}")
         if menuChoice == 4:
             player1.talentUse()
         if menuChoice == 0:
             break
-
 
 # добавить больше кнопок для выбора, дописать инвентарь создав список в персонаже и напимать функцию которая этот список показывает при помощи цикла for и  обращения к конкретным атрибутам
 Main()
