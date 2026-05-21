@@ -65,21 +65,29 @@ class Character:
         return False
 
     def medsUse(self):
-        self.inventoryView()
-        i=int(input("Введите номер предмета для использования. "))
-        invItem = self.inventory[i]
-        if invItem.itemType == "meds":
-            if self.hp + invItem.stat > self.cMaxHp:
-                self.hp = self.cMaxHp
-                self.inventory.remove(invItem)
-                print(f"Вы восстановили здоровье до максимума ({self.cMaxHp})")
-            elif self.hp == self.cMaxHp:
-                # медикамент не тратится
-                print("У вас максимальный запас здоровья, вы не можете использовать медикамент.")
+        while True:
+            self.inventoryView()
+            i=int(input("Введите номер предмета для использования. "))
+            if i >= 0 and i<len(self.inventory):
+
+                invItem = self.inventory[i]
+                if invItem.itemType == "meds":
+                    if self.hp + invItem.healHp > self.cMaxHp:
+                        self.hp = self.cMaxHp
+                        self.inventory.remove(invItem)
+                        self.inventoryView()
+                        print(f"Вы восстановили здоровье до максимума ({self.cMaxHp})")
+                    elif self.hp == self.cMaxHp:
+                        # медикамент не тратится
+                        print("У вас максимальный запас здоровья, вы не можете использовать медикамент.")
+                    else:
+                        self.hp += invItem.healHp
+                        self.inventory.remove(invItem)
+                        self.inventoryView()
+                        print(f"Вы восстановили здоровье до {self.hp}/{self.cMaxHp}")
+                break
             else:
-                self.hp += invItem.stat
-                self.inventory.remove(invItem)
-                print(f"Вы восстановили здоровье до {self.hp}/{self.cMaxHp}")
+                print("Неверный номер предмета")
 
     # добавить ограничения по типу невозможности хилиться больше максимального количества хп
 
@@ -207,6 +215,7 @@ class Armor:
         self.name = name
         self.pDefence = pDefence
         self.mDefence = mDefence
+        itemType="armor"
 
 
 class Weapon:
@@ -217,6 +226,7 @@ class Weapon:
         self.magicDmg = magicDmg
         self.range = range
         self.accuracy = accuracy
+        self.itemType="weapon"
 
 
 class Meds:
@@ -224,6 +234,7 @@ class Meds:
         self.name = name
         self.healHp = healHp
         self.actionPointsUse = actionPointsUse
+        self.itemType="meds"
 
 
 class Enemy:
